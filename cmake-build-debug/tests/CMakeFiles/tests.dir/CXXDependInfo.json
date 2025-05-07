@@ -14,8 +14,8 @@
 	"include-dirs" : 
 	[
 		"/home/herlove/Documents/scripts/c-projects/not-your-gimp/tests/../src",
-		"/home/herlove/Documents/scripts/c-projects/not-your-gimp/tests/lib/googletest/googletest/include",
-		"/home/herlove/Documents/scripts/c-projects/not-your-gimp/tests/lib/googletest/googletest"
+		"_deps/googletest-src/googletest/include",
+		"_deps/googletest-src/googletest"
 	],
 	"language" : "CXX",
 	"linked-target-dirs" : [],

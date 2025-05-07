@@ -130,7 +130,7 @@ rule CXX_SCAN__gmock_Debug
 # Rule to generate ninja dyndep files for CXX.
 
 rule CXX_DYNDEP__gmock_Debug
-  command = /home/herlove/.local/share/JetBrains/Toolbox/apps/clion/bin/cmake/linux/x64/bin/cmake -E cmake_ninja_dyndep --tdi=tests/lib/googletest/googlemock/CMakeFiles/gmock.dir/CXXDependInfo.json --lang=CXX --modmapfmt=gcc --dd=$out @$out.rsp
+  command = /home/herlove/.local/share/JetBrains/Toolbox/apps/clion/bin/cmake/linux/x64/bin/cmake -E cmake_ninja_dyndep --tdi=_deps/googletest-build/googlemock/CMakeFiles/gmock.dir/CXXDependInfo.json --lang=CXX --modmapfmt=gcc --dd=$out @$out.rsp
   description = Generating CXX dyndep file $out
   rspfile = $out.rsp
   rspfile_content = $in
@@ -179,7 +179,7 @@ rule CXX_SCAN__gmock_main_Debug
 # Rule to generate ninja dyndep files for CXX.
 
 rule CXX_DYNDEP__gmock_main_Debug
-  command = /home/herlove/.local/share/JetBrains/Toolbox/apps/clion/bin/cmake/linux/x64/bin/cmake -E cmake_ninja_dyndep --tdi=tests/lib/googletest/googlemock/CMakeFiles/gmock_main.dir/CXXDependInfo.json --lang=CXX --modmapfmt=gcc --dd=$out @$out.rsp
+  command = /home/herlove/.local/share/JetBrains/Toolbox/apps/clion/bin/cmake/linux/x64/bin/cmake -E cmake_ninja_dyndep --tdi=_deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/CXXDependInfo.json --lang=CXX --modmapfmt=gcc --dd=$out @$out.rsp
   description = Generating CXX dyndep file $out
   rspfile = $out.rsp
   rspfile_content = $in
@@ -228,7 +228,7 @@ rule CXX_SCAN__gtest_Debug
 # Rule to generate ninja dyndep files for CXX.
 
 rule CXX_DYNDEP__gtest_Debug
-  command = /home/herlove/.local/share/JetBrains/Toolbox/apps/clion/bin/cmake/linux/x64/bin/cmake -E cmake_ninja_dyndep --tdi=tests/lib/googletest/googletest/CMakeFiles/gtest.dir/CXXDependInfo.json --lang=CXX --modmapfmt=gcc --dd=$out @$out.rsp
+  command = /home/herlove/.local/share/JetBrains/Toolbox/apps/clion/bin/cmake/linux/x64/bin/cmake -E cmake_ninja_dyndep --tdi=_deps/googletest-build/googletest/CMakeFiles/gtest.dir/CXXDependInfo.json --lang=CXX --modmapfmt=gcc --dd=$out @$out.rsp
   description = Generating CXX dyndep file $out
   rspfile = $out.rsp
   rspfile_content = $in
@@ -277,7 +277,7 @@ rule CXX_SCAN__gtest_main_Debug
 # Rule to generate ninja dyndep files for CXX.
 
 rule CXX_DYNDEP__gtest_main_Debug
-  command = /home/herlove/.local/share/JetBrains/Toolbox/apps/clion/bin/cmake/linux/x64/bin/cmake -E cmake_ninja_dyndep --tdi=tests/lib/googletest/googletest/CMakeFiles/gtest_main.dir/CXXDependInfo.json --lang=CXX --modmapfmt=gcc --dd=$out @$out.rsp
+  command = /home/herlove/.local/share/JetBrains/Toolbox/apps/clion/bin/cmake/linux/x64/bin/cmake -E cmake_ninja_dyndep --tdi=_deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/CXXDependInfo.json --lang=CXX --modmapfmt=gcc --dd=$out @$out.rsp
   description = Generating CXX dyndep file $out
   rspfile = $out.rsp
   rspfile_content = $in

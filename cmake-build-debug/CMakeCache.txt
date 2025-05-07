@@ -313,34 +313,34 @@ GTEST_HAS_ABSL:BOOL=OFF
 INSTALL_GTEST:BOOL=ON
 
 //Value Computed by CMake
-gmock_BINARY_DIR:STATIC=/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/tests/lib/googletest/googlemock
+gmock_BINARY_DIR:STATIC=/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/_deps/googletest-build/googlemock
 
 //Value Computed by CMake
 gmock_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
-gmock_SOURCE_DIR:STATIC=/home/herlove/Documents/scripts/c-projects/not-your-gimp/tests/lib/googletest/googlemock
+gmock_SOURCE_DIR:STATIC=/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/_deps/googletest-src/googlemock
 
 //Build all of Google Mock's own tests.
 gmock_build_tests:BOOL=OFF
 
 //Value Computed by CMake
-googletest-distribution_BINARY_DIR:STATIC=/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/tests/lib/googletest
+googletest-distribution_BINARY_DIR:STATIC=/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/_deps/googletest-build
 
 //Value Computed by CMake
 googletest-distribution_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
-googletest-distribution_SOURCE_DIR:STATIC=/home/herlove/Documents/scripts/c-projects/not-your-gimp/tests/lib/googletest
+googletest-distribution_SOURCE_DIR:STATIC=/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/_deps/googletest-src
 
 //Value Computed by CMake
-gtest_BINARY_DIR:STATIC=/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/tests/lib/googletest/googletest
+gtest_BINARY_DIR:STATIC=/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/_deps/googletest-build/googletest
 
 //Value Computed by CMake
 gtest_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
-gtest_SOURCE_DIR:STATIC=/home/herlove/Documents/scripts/c-projects/not-your-gimp/tests/lib/googletest/googletest
+gtest_SOURCE_DIR:STATIC=/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/_deps/googletest-src/googletest
 
 //Build gtest's sample programs.
 gtest_build_samples:BOOL=OFF
@@ -569,7 +569,7 @@ _Python3_INTERPRETER_SIGNATURE:INTERNAL=3cf1743d9aa7acccc2d2c98aa826f506
 //NumPy reason failure
 _Python3_NumPy_REASON_FAILURE:INTERNAL=
 cmake_package_name:INTERNAL=GTest
-generated_dir:INTERNAL=/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/tests/lib/googletest/googletest/generated
+generated_dir:INTERNAL=/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/_deps/googletest-build/googletest/generated
 //ADVANCED property for variable: gmock_build_tests
 gmock_build_tests-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: gtest_build_samples

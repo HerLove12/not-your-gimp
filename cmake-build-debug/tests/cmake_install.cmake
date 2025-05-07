@@ -44,6 +44,6 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/tests/lib/googletest/cmake_install.cmake")
+  include("/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/_deps/googletest-build/cmake_install.cmake")
 endif()
 
