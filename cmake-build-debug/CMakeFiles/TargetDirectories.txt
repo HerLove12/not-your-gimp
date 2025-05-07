@@ -1,0 +1,3 @@
+/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/CMakeFiles/not_your_gimp.dir
+/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/CMakeFiles/rebuild_cache.dir
