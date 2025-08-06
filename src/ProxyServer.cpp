@@ -48,58 +48,93 @@ void ProxyServer::start() {
 }
 
 void ProxyServer::handleClient(int clientSocket) {
-    std::cout << "[*] New client connected. Preparing to connect to target server..." << std::endl;
+    std::cout << "[*] New client connected. Reading request...\n";
 
-    // Create socket to Target Server
+    // Step 1: Read HTTP Request Header
+    std::string requestData;
+    char buffer[4096];
+    ssize_t bytesRead;
+
+    while ((bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0)) > 0) {
+        requestData.append(buffer, bytesRead);
+        if (requestData.find("\r\n\r\n") != std::string::npos) {
+            break;  // End of headers
+        }
+    }
+
+    if (requestData.empty()) {
+        std::cerr << "[-] Failed to read request from client.\n";
+        close(clientSocket);
+        return;
+    }
+
+    std::cout << "[Intercept] Original Client Request:\n" << requestData << "\n";
+
+    // Step 2: Extract Host Header
+    std::string host;
+    size_t hostPos = requestData.find("Host:");
+    if (hostPos != std::string::npos) {
+        size_t hostStart = hostPos + 5;  // Skip "Host:"
+        size_t hostEnd = requestData.find("\r\n", hostStart);
+        host = requestData.substr(hostStart, hostEnd - hostStart);
+        // Trim spaces
+        host.erase(0, host.find_first_not_of(" \t"));
+        host.erase(host.find_last_not_of(" \t") + 1);
+    } else {
+        std::cerr << "[-] No Host header found.\n";
+        close(clientSocket);
+        return;
+    }
+
+    std::cout << "[+] Extracted Host: " << host << "\n";
+
+    // Step 3: Resolve Target Hostname
+    struct hostent* target = gethostbyname(host.c_str());
+    if (target == nullptr) {
+        std::cerr << "[-] Failed to resolve hostname: " << host << "\n";
+        close(clientSocket);
+        return;
+    }
+
+    std::cout << "[+] Resolved " << host << " to IP: " << inet_ntoa(*(struct in_addr*)target->h_addr) << "\n";
+
+    // Step 4: Connect to Target Server
     int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (serverSocket < 0) {
-        perror("[!] Socket to target failed");
+        perror("Socket to target failed");
         close(clientSocket);
         return;
     }
-    std::cout << "[+] Created socket to target server." << std::endl;
 
-    // Resolve Target Hostname
-    struct hostent* target = gethostbyname(targetHost_.c_str());
-    if (target == nullptr) {
-        std::cerr << "[!] Failed to resolve hostname: " << targetHost_ << std::endl;
-        close(clientSocket);
-        close(serverSocket);
-        return;
-    }
-    std::cout << "[+] Resolved hostname " << targetHost_ << " to IP: "
-              << inet_ntoa(*(struct in_addr*)target->h_addr) << std::endl;
-
-    // Prepare sockaddr_in for target
     sockaddr_in serverAddr {};
     serverAddr.sin_family = AF_INET;
-    serverAddr.sin_port = htons(targetPort_);
+    serverAddr.sin_port = htons(80);  // Assuming HTTP only
     memcpy(&serverAddr.sin_addr.s_addr, target->h_addr, target->h_length);
 
-    // Connect to Target Server
     if (connect(serverSocket, (sockaddr*)&serverAddr, sizeof(serverAddr)) < 0) {
-        perror("[!] Connect to target failed");
+        perror("Connect to target failed");
         close(clientSocket);
         close(serverSocket);
         return;
     }
-    std::cout << "[+] Connection established: Client ↔ Proxy ↔ "
-              << targetHost_ << ":" << targetPort_ << std::endl;
 
-    // Start Bi-directional Forwarding
-    std::cout << "[*] Starting data forwarding threads..." << std::endl;
+    std::cout << "[+] Connection established: Client ↔ Proxy ↔ " << host << "\n";
 
+    // Step 5: Forward the request to the real server
+    send(serverSocket, requestData.c_str(), requestData.length(), 0);
+
+    // Step 6: Start Bi-Directional Data Forwarding
     std::thread t1(&ProxyServer::forwardData, this, clientSocket, serverSocket, "Client → Server");
     std::thread t2(&ProxyServer::forwardData, this, serverSocket, clientSocket, "Server → Client");
 
     t1.join();
     t2.join();
 
-    std::cout << "[*] Forwarding threads finished. Closing sockets..." << std::endl;
     close(clientSocket);
     close(serverSocket);
-    std::cout << "[-] Connection closed." << std::endl;
+    std::cout << "[-] Connection closed.\n";
 }
+
 
 
 void ProxyServer::forwardData(int sourceSocket, int destSocket, const std::string& direction) {

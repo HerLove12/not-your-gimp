@@ -57803,66 +57803,101 @@ void ProxyServer::start() {
 }
 
 void ProxyServer::handleClient(int clientSocket) {
-    std::cout << "[*] New client connected. Preparing to connect to target server..." << std::endl;
+    std::cout << "[*] New client connected. Reading request...\n";
+
+
+    std::string requestData;
+    char buffer[4096];
+    ssize_t bytesRead;
+
+    while ((bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0)) > 0) {
+        requestData.append(buffer, bytesRead);
+        if (requestData.find("\r\n\r\n") != std::string::npos) {
+            break;
+        }
+    }
+
+    if (requestData.empty()) {
+        std::cerr << "[-] Failed to read request from client.\n";
+        close(clientSocket);
+        return;
+    }
+
+    std::cout << "[Intercept] Original Client Request:\n" << requestData << "\n";
+
+
+    std::string host;
+    size_t hostPos = requestData.find("Host:");
+    if (hostPos != std::string::npos) {
+        size_t hostStart = hostPos + 5;
+        size_t hostEnd = requestData.find("\r\n", hostStart);
+        host = requestData.substr(hostStart, hostEnd - hostStart);
+
+        host.erase(0, host.find_first_not_of(" \t"));
+        host.erase(host.find_last_not_of(" \t") + 1);
+    } else {
+        std::cerr << "[-] No Host header found.\n";
+        close(clientSocket);
+        return;
+    }
+
+    std::cout << "[+] Extracted Host: " << host << "\n";
+
+
+    struct hostent* target = gethostbyname(host.c_str());
+    if (target == nullptr) {
+        std::cerr << "[-] Failed to resolve hostname: " << host << "\n";
+        close(clientSocket);
+        return;
+    }
+
+    std::cout << "[+] Resolved " << host << " to IP: " << inet_ntoa(*(struct in_addr*)target->
+# 99 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
+                                                                                             h_addr_list[0]
+# 99 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
+                                                                                                   ) << "\n";
 
 
     int serverSocket = socket(
-# 54 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
+# 102 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
                              2
-# 54 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
+# 102 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
                                     , 
-# 54 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
+# 102 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
                                       SOCK_STREAM
-# 54 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
+# 102 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
                                                  , 0);
     if (serverSocket < 0) {
-        perror("[!] Socket to target failed");
+        perror("Socket to target failed");
         close(clientSocket);
         return;
     }
-    std::cout << "[+] Created socket to target server." << std::endl;
-
-
-    struct hostent* target = gethostbyname(targetHost_.c_str());
-    if (target == nullptr) {
-        std::cerr << "[!] Failed to resolve hostname: " << targetHost_ << std::endl;
-        close(clientSocket);
-        close(serverSocket);
-        return;
-    }
-    std::cout << "[+] Resolved hostname " << targetHost_ << " to IP: "
-              << inet_ntoa(*(struct in_addr*)target->
-# 71 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
-                                                    h_addr_list[0]
-# 71 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
-                                                          ) << std::endl;
-
 
     sockaddr_in serverAddr {};
     serverAddr.sin_family = 
-# 75 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
+# 110 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
                            2
-# 75 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
+# 110 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
                                   ;
-    serverAddr.sin_port = htons(targetPort_);
+    serverAddr.sin_port = htons(80);
     memcpy(&serverAddr.sin_addr.s_addr, target->
-# 77 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
+# 112 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
                                                h_addr_list[0]
-# 77 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
+# 112 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
                                                      , target->h_length);
 
-
     if (connect(serverSocket, (sockaddr*)&serverAddr, sizeof(serverAddr)) < 0) {
-        perror("[!] Connect to target failed");
+        perror("Connect to target failed");
         close(clientSocket);
         close(serverSocket);
         return;
     }
-    std::cout << "[+] Connection established: Client ↔ Proxy ↔ "
-              << targetHost_ << ":" << targetPort_ << std::endl;
+
+    std::cout << "[+] Connection established: Client ↔ Proxy ↔ " << host << "\n";
 
 
-    std::cout << "[*] Starting data forwarding threads..." << std::endl;
+    send(serverSocket, requestData.c_str(), requestData.length(), 0);
+
 
     std::thread t1(&ProxyServer::forwardData, this, clientSocket, serverSocket, "Client → Server");
     std::thread t2(&ProxyServer::forwardData, this, serverSocket, clientSocket, "Server → Client");
@@ -57870,11 +57905,11 @@ void ProxyServer::handleClient(int clientSocket) {
     t1.join();
     t2.join();
 
-    std::cout << "[*] Forwarding threads finished. Closing sockets..." << std::endl;
     close(clientSocket);
     close(serverSocket);
-    std::cout << "[-] Connection closed." << std::endl;
+    std::cout << "[-] Connection closed.\n";
 }
+
 
 
 void ProxyServer::forwardData(int sourceSocket, int destSocket, const std::string& direction) {
