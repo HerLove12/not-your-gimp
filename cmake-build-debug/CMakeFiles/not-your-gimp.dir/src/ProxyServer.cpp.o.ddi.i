@@ -25938,6 +25938,12 @@ __extension__ extern long long int llabs (long long int __x)
 
 
 
+extern unsigned int uabs (int __x) noexcept (true) __attribute__ ((__const__)) ;
+extern unsigned long int ulabs (long int __x) noexcept (true) __attribute__ ((__const__)) ;
+__extension__ extern unsigned long long int ullabs (long long int __x)
+     noexcept (true) __attribute__ ((__const__)) ;
+
+
 
 
 
@@ -25950,7 +25956,7 @@ extern ldiv_t ldiv (long int __numer, long int __denom)
 __extension__ extern lldiv_t lldiv (long long int __numer,
         long long int __denom)
      noexcept (true) __attribute__ ((__const__)) ;
-# 1012 "/usr/include/stdlib.h" 3 4
+# 1018 "/usr/include/stdlib.h" 3 4
 extern char *ecvt (double __value, int __ndigit, int *__restrict __decpt,
      int *__restrict __sign) noexcept (true) __attribute__ ((__nonnull__ (3, 4))) ;
 
@@ -26028,7 +26034,7 @@ extern size_t wcstombs (char *__restrict __s,
 
 
 extern int rpmatch (const char *__response) noexcept (true) __attribute__ ((__nonnull__ (1))) ;
-# 1099 "/usr/include/stdlib.h" 3 4
+# 1105 "/usr/include/stdlib.h" 3 4
 extern int getsubopt (char **__restrict __optionp,
         char *const *__restrict __tokens,
         char **__restrict __valuep)
@@ -26077,10 +26083,10 @@ extern int getpt (void);
 
 extern int getloadavg (double __loadavg[], int __nelem)
      noexcept (true) __attribute__ ((__nonnull__ (1)));
-# 1155 "/usr/include/stdlib.h" 3 4
+# 1161 "/usr/include/stdlib.h" 3 4
 # 1 "/usr/include/bits/stdlib-float.h" 1 3 4
-# 1156 "/usr/include/stdlib.h" 2 3 4
-# 1167 "/usr/include/stdlib.h" 3 4
+# 1162 "/usr/include/stdlib.h" 2 3 4
+# 1173 "/usr/include/stdlib.h" 3 4
 }
 # 84 "/usr/include/c++/15.1.1/cstdlib" 2 3
 
@@ -26308,7 +26314,10 @@ typedef struct _G_fpos64_t
 
 
 # 1 "/usr/include/bits/types/struct_FILE.h" 1 3 4
-# 36 "/usr/include/bits/types/struct_FILE.h" 3 4
+# 35 "/usr/include/bits/types/struct_FILE.h" 3 4
+# 1 "/usr/include/bits/wordsize.h" 1 3 4
+# 36 "/usr/include/bits/types/struct_FILE.h" 2 3 4
+
 struct _IO_FILE;
 struct _IO_marker;
 struct _IO_codecvt;
@@ -26374,7 +26383,14 @@ struct _IO_FILE
   struct _IO_FILE **_prevchain;
   int _mode;
 
-  char _unused2[15 * sizeof (int) - 5 * sizeof (void *)];
+  int _unused3;
+
+  __uint64_t _total_written;
+
+
+
+
+  char _unused2[12 * sizeof (int) - 5 * sizeof (void *)];
 };
 # 45 "/usr/include/stdio.h" 2 3 4
 
@@ -26445,7 +26461,7 @@ extern int rename (const char *__old, const char *__new) noexcept (true);
 
 extern int renameat (int __oldfd, const char *__old, int __newfd,
        const char *__new) noexcept (true);
-# 176 "/usr/include/stdio.h" 3 4
+# 179 "/usr/include/stdio.h" 3 4
 extern int renameat2 (int __oldfd, const char *__old, int __newfd,
         const char *__new, unsigned int __flags) noexcept (true);
 
@@ -26455,10 +26471,10 @@ extern int renameat2 (int __oldfd, const char *__old, int __newfd,
 
 
 extern int fclose (FILE *__stream) __attribute__ ((__nonnull__ (1)));
-# 194 "/usr/include/stdio.h" 3 4
+# 197 "/usr/include/stdio.h" 3 4
 extern FILE *tmpfile (void)
   __attribute__ ((__malloc__)) __attribute__ ((__malloc__ (fclose, 1))) ;
-# 206 "/usr/include/stdio.h" 3 4
+# 209 "/usr/include/stdio.h" 3 4
 extern FILE *tmpfile64 (void)
    __attribute__ ((__malloc__)) __attribute__ ((__malloc__ (fclose, 1))) ;
 
@@ -26470,7 +26486,7 @@ extern char *tmpnam (char[20]) noexcept (true) ;
 
 
 extern char *tmpnam_r (char __s[20]) noexcept (true) ;
-# 228 "/usr/include/stdio.h" 3 4
+# 231 "/usr/include/stdio.h" 3 4
 extern char *tempnam (const char *__dir, const char *__pfx)
    noexcept (true) __attribute__ ((__malloc__)) __attribute__ ((__malloc__ (__builtin_free, 1)));
 
@@ -26480,11 +26496,11 @@ extern char *tempnam (const char *__dir, const char *__pfx)
 
 
 extern int fflush (FILE *__stream);
-# 245 "/usr/include/stdio.h" 3 4
+# 248 "/usr/include/stdio.h" 3 4
 extern int fflush_unlocked (FILE *__stream);
-# 255 "/usr/include/stdio.h" 3 4
+# 258 "/usr/include/stdio.h" 3 4
 extern int fcloseall (void);
-# 264 "/usr/include/stdio.h" 3 4
+# 267 "/usr/include/stdio.h" 3 4
 extern FILE *fopen (const char *__restrict __filename,
       const char *__restrict __modes)
   __attribute__ ((__malloc__)) __attribute__ ((__malloc__ (fclose, 1))) ;
@@ -26495,7 +26511,7 @@ extern FILE *fopen (const char *__restrict __filename,
 extern FILE *freopen (const char *__restrict __filename,
         const char *__restrict __modes,
         FILE *__restrict __stream) __attribute__ ((__nonnull__ (3)));
-# 289 "/usr/include/stdio.h" 3 4
+# 292 "/usr/include/stdio.h" 3 4
 extern FILE *fopen64 (const char *__restrict __filename,
         const char *__restrict __modes)
   __attribute__ ((__malloc__)) __attribute__ ((__malloc__ (fclose, 1))) ;
@@ -26639,7 +26655,7 @@ extern int scanf (const char *__restrict __format, ...) ;
 
 extern int sscanf (const char *__restrict __s,
      const char *__restrict __format, ...) noexcept (true);
-# 442 "/usr/include/stdio.h" 3 4
+# 445 "/usr/include/stdio.h" 3 4
 extern int fscanf (FILE *__restrict __stream, const char *__restrict __format, ...) __asm__ ("" "__isoc23_fscanf")
 
                                 __attribute__ ((__nonnull__ (1)));
@@ -26648,7 +26664,7 @@ extern int scanf (const char *__restrict __format, ...) __asm__ ("" "__isoc23_sc
 extern int sscanf (const char *__restrict __s, const char *__restrict __format, ...) noexcept (true) __asm__ ("" "__isoc23_sscanf")
 
                       ;
-# 490 "/usr/include/stdio.h" 3 4
+# 493 "/usr/include/stdio.h" 3 4
 extern int vfscanf (FILE *__restrict __s, const char *__restrict __format,
       __gnuc_va_list __arg)
      __attribute__ ((__format__ (__scanf__, 2, 0))) __attribute__ ((__nonnull__ (1)));
@@ -26683,7 +26699,7 @@ extern int vsscanf (const char *__restrict __s, const char *__restrict __format,
 
 
      __attribute__ ((__format__ (__scanf__, 2, 0)));
-# 575 "/usr/include/stdio.h" 3 4
+# 578 "/usr/include/stdio.h" 3 4
 extern int fgetc (FILE *__stream) __attribute__ ((__nonnull__ (1)));
 extern int getc (FILE *__stream) __attribute__ ((__nonnull__ (1)));
 
@@ -26700,9 +26716,15 @@ extern int getchar (void);
 
 extern int getc_unlocked (FILE *__stream) __attribute__ ((__nonnull__ (1)));
 extern int getchar_unlocked (void);
-# 600 "/usr/include/stdio.h" 3 4
+# 603 "/usr/include/stdio.h" 3 4
 extern int fgetc_unlocked (FILE *__stream) __attribute__ ((__nonnull__ (1)));
-# 611 "/usr/include/stdio.h" 3 4
+
+
+
+
+
+
+
 extern int fputc (int __c, FILE *__stream) __attribute__ ((__nonnull__ (2)));
 extern int putc (int __c, FILE *__stream) __attribute__ ((__nonnull__ (2)));
 
@@ -31742,8 +31764,482 @@ private:
     int targetPort_;
 
     void handleClient(int clientSocket);
+    void forwardData(int fromSocket, int toSocket, const std::string& direction);
 };
 # 2 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 2
+
+# 1 "/usr/include/c++/15.1.1/cstring" 1 3
+# 47 "/usr/include/c++/15.1.1/cstring" 3
+# 1 "/usr/include/c++/15.1.1/bits/version.h" 1 3
+# 48 "/usr/include/c++/15.1.1/cstring" 2 3
+# 1 "/usr/include/string.h" 1 3 4
+# 26 "/usr/include/string.h" 3 4
+# 1 "/usr/include/bits/libc-header-start.h" 1 3 4
+# 27 "/usr/include/string.h" 2 3 4
+
+
+# 28 "/usr/include/string.h" 3 4
+extern "C" {
+
+
+
+
+# 1 "/usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/include/stddef.h" 1 3 4
+# 34 "/usr/include/string.h" 2 3 4
+# 43 "/usr/include/string.h" 3 4
+extern void *memcpy (void *__restrict __dest, const void *__restrict __src,
+       size_t __n) noexcept (true) __attribute__ ((__nonnull__ (1, 2)));
+
+
+extern void *memmove (void *__dest, const void *__src, size_t __n)
+     noexcept (true) __attribute__ ((__nonnull__ (1, 2)));
+
+
+
+
+
+extern void *memccpy (void *__restrict __dest, const void *__restrict __src,
+        int __c, size_t __n)
+    noexcept (true) __attribute__ ((__nonnull__ (1, 2))) __attribute__ ((__access__ (__write_only__, 1, 4)));
+
+
+
+
+extern void *memset (void *__s, int __c, size_t __n) noexcept (true) __attribute__ ((__nonnull__ (1)));
+
+
+extern int memcmp (const void *__s1, const void *__s2, size_t __n)
+     noexcept (true) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+# 80 "/usr/include/string.h" 3 4
+extern int __memcmpeq (const void *__s1, const void *__s2, size_t __n)
+     noexcept (true) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+
+
+
+extern "C++"
+{
+extern void *memchr (void *__s, int __c, size_t __n)
+      noexcept (true) __asm ("memchr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+extern const void *memchr (const void *__s, int __c, size_t __n)
+      noexcept (true) __asm ("memchr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+# 105 "/usr/include/string.h" 3 4
+}
+# 115 "/usr/include/string.h" 3 4
+extern "C++" void *rawmemchr (void *__s, int __c)
+     noexcept (true) __asm ("rawmemchr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+extern "C++" const void *rawmemchr (const void *__s, int __c)
+     noexcept (true) __asm ("rawmemchr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+
+
+
+
+
+
+
+extern "C++" void *memrchr (void *__s, int __c, size_t __n)
+      noexcept (true) __asm ("memrchr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)))
+      __attribute__ ((__access__ (__read_only__, 1, 3)));
+extern "C++" const void *memrchr (const void *__s, int __c, size_t __n)
+      noexcept (true) __asm ("memrchr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)))
+      __attribute__ ((__access__ (__read_only__, 1, 3)));
+# 141 "/usr/include/string.h" 3 4
+extern char *strcpy (char *__restrict __dest, const char *__restrict __src)
+     noexcept (true) __attribute__ ((__nonnull__ (1, 2)));
+
+extern char *strncpy (char *__restrict __dest,
+        const char *__restrict __src, size_t __n)
+     noexcept (true) __attribute__ ((__nonnull__ (1, 2)));
+
+
+extern char *strcat (char *__restrict __dest, const char *__restrict __src)
+     noexcept (true) __attribute__ ((__nonnull__ (1, 2)));
+
+extern char *strncat (char *__restrict __dest, const char *__restrict __src,
+        size_t __n) noexcept (true) __attribute__ ((__nonnull__ (1, 2)));
+
+
+extern int strcmp (const char *__s1, const char *__s2)
+     noexcept (true) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+
+extern int strncmp (const char *__s1, const char *__s2, size_t __n)
+     noexcept (true) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+
+
+extern int strcoll (const char *__s1, const char *__s2)
+     noexcept (true) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+
+extern size_t strxfrm (char *__restrict __dest,
+         const char *__restrict __src, size_t __n)
+    noexcept (true) __attribute__ ((__nonnull__ (2))) __attribute__ ((__access__ (__write_only__, 1, 3)));
+
+
+
+
+
+
+extern int strcoll_l (const char *__s1, const char *__s2, locale_t __l)
+     noexcept (true) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2, 3)));
+
+
+extern size_t strxfrm_l (char *__dest, const char *__src, size_t __n,
+    locale_t __l) noexcept (true) __attribute__ ((__nonnull__ (2, 4)))
+     __attribute__ ((__access__ (__write_only__, 1, 3)));
+
+
+
+
+
+extern char *strdup (const char *__s)
+     noexcept (true) __attribute__ ((__malloc__)) __attribute__ ((__nonnull__ (1)));
+
+
+
+
+
+
+extern char *strndup (const char *__string, size_t __n)
+     noexcept (true) __attribute__ ((__malloc__)) __attribute__ ((__nonnull__ (1)));
+# 224 "/usr/include/string.h" 3 4
+extern "C++"
+{
+extern char *strchr (char *__s, int __c)
+     noexcept (true) __asm ("strchr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+extern const char *strchr (const char *__s, int __c)
+     noexcept (true) __asm ("strchr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+# 244 "/usr/include/string.h" 3 4
+}
+
+
+
+
+
+
+extern "C++"
+{
+extern char *strrchr (char *__s, int __c)
+     noexcept (true) __asm ("strrchr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+extern const char *strrchr (const char *__s, int __c)
+     noexcept (true) __asm ("strrchr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+# 271 "/usr/include/string.h" 3 4
+}
+# 281 "/usr/include/string.h" 3 4
+extern "C++" char *strchrnul (char *__s, int __c)
+     noexcept (true) __asm ("strchrnul") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+extern "C++" const char *strchrnul (const char *__s, int __c)
+     noexcept (true) __asm ("strchrnul") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+# 293 "/usr/include/string.h" 3 4
+extern size_t strcspn (const char *__s, const char *__reject)
+     noexcept (true) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+
+
+extern size_t strspn (const char *__s, const char *__accept)
+     noexcept (true) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+
+
+extern "C++"
+{
+extern char *strpbrk (char *__s, const char *__accept)
+     noexcept (true) __asm ("strpbrk") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+extern const char *strpbrk (const char *__s, const char *__accept)
+     noexcept (true) __asm ("strpbrk") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+# 321 "/usr/include/string.h" 3 4
+}
+
+
+
+
+
+
+extern "C++"
+{
+extern char *strstr (char *__haystack, const char *__needle)
+     noexcept (true) __asm ("strstr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+extern const char *strstr (const char *__haystack, const char *__needle)
+     noexcept (true) __asm ("strstr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+# 348 "/usr/include/string.h" 3 4
+}
+
+
+
+
+
+
+
+extern char *strtok (char *__restrict __s, const char *__restrict __delim)
+     noexcept (true) __attribute__ ((__nonnull__ (2)));
+
+
+
+extern char *__strtok_r (char *__restrict __s,
+    const char *__restrict __delim,
+    char **__restrict __save_ptr)
+     noexcept (true) __attribute__ ((__nonnull__ (2, 3)));
+
+extern char *strtok_r (char *__restrict __s, const char *__restrict __delim,
+         char **__restrict __save_ptr)
+     noexcept (true) __attribute__ ((__nonnull__ (2, 3)));
+
+
+
+
+
+extern "C++" char *strcasestr (char *__haystack, const char *__needle)
+     noexcept (true) __asm ("strcasestr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+extern "C++" const char *strcasestr (const char *__haystack,
+         const char *__needle)
+     noexcept (true) __asm ("strcasestr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+# 389 "/usr/include/string.h" 3 4
+extern void *memmem (const void *__haystack, size_t __haystacklen,
+       const void *__needle, size_t __needlelen)
+     noexcept (true) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 3)))
+    __attribute__ ((__access__ (__read_only__, 1, 2)))
+    __attribute__ ((__access__ (__read_only__, 3, 4)));
+
+
+
+extern void *__mempcpy (void *__restrict __dest,
+   const void *__restrict __src, size_t __n)
+     noexcept (true) __attribute__ ((__nonnull__ (1, 2)));
+extern void *mempcpy (void *__restrict __dest,
+        const void *__restrict __src, size_t __n)
+     noexcept (true) __attribute__ ((__nonnull__ (1, 2)));
+
+
+
+
+extern size_t strlen (const char *__s)
+     noexcept (true) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+
+
+
+
+extern size_t strnlen (const char *__string, size_t __maxlen)
+     noexcept (true) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+
+
+
+
+extern char *strerror (int __errnum) noexcept (true);
+# 444 "/usr/include/string.h" 3 4
+extern char *strerror_r (int __errnum, char *__buf, size_t __buflen)
+     noexcept (true) __attribute__ ((__nonnull__ (2))) __attribute__ ((__access__ (__write_only__, 2, 3)));
+
+
+
+
+extern const char *strerrordesc_np (int __err) noexcept (true);
+
+extern const char *strerrorname_np (int __err) noexcept (true);
+
+
+
+
+
+extern char *strerror_l (int __errnum, locale_t __l) noexcept (true);
+
+
+
+# 1 "/usr/include/strings.h" 1 3 4
+# 23 "/usr/include/strings.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/include/stddef.h" 1 3 4
+# 24 "/usr/include/strings.h" 2 3 4
+
+
+
+
+
+
+extern "C" {
+
+
+
+extern int bcmp (const void *__s1, const void *__s2, size_t __n)
+     noexcept (true) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+
+
+extern void bcopy (const void *__src, void *__dest, size_t __n)
+  noexcept (true) __attribute__ ((__nonnull__ (1, 2)));
+
+
+extern void bzero (void *__s, size_t __n) noexcept (true) __attribute__ ((__nonnull__ (1)));
+
+
+
+extern "C++"
+{
+extern char *index (char *__s, int __c)
+     noexcept (true) __asm ("index") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+extern const char *index (const char *__s, int __c)
+     noexcept (true) __asm ("index") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+# 66 "/usr/include/strings.h" 3 4
+}
+
+
+
+
+
+
+
+extern "C++"
+{
+extern char *rindex (char *__s, int __c)
+     noexcept (true) __asm ("rindex") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+extern const char *rindex (const char *__s, int __c)
+     noexcept (true) __asm ("rindex") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+# 94 "/usr/include/strings.h" 3 4
+}
+# 104 "/usr/include/strings.h" 3 4
+extern int ffs (int __i) noexcept (true) __attribute__ ((__const__));
+
+
+
+
+
+extern int ffsl (long int __l) noexcept (true) __attribute__ ((__const__));
+__extension__ extern int ffsll (long long int __ll)
+     noexcept (true) __attribute__ ((__const__));
+
+
+
+extern int strcasecmp (const char *__s1, const char *__s2)
+     noexcept (true) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+
+
+extern int strncasecmp (const char *__s1, const char *__s2, size_t __n)
+     noexcept (true) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+
+
+
+
+
+
+extern int strcasecmp_l (const char *__s1, const char *__s2, locale_t __loc)
+     noexcept (true) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2, 3)));
+
+
+
+extern int strncasecmp_l (const char *__s1, const char *__s2,
+     size_t __n, locale_t __loc)
+     noexcept (true) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2, 4)));
+
+
+}
+# 463 "/usr/include/string.h" 2 3 4
+
+
+
+extern void explicit_bzero (void *__s, size_t __n) noexcept (true) __attribute__ ((__nonnull__ (1)))
+    __attribute__ ((__access__ (__write_only__, 1, 2)));
+
+
+
+extern char *strsep (char **__restrict __stringp,
+       const char *__restrict __delim)
+     noexcept (true) __attribute__ ((__nonnull__ (1, 2)));
+
+
+
+
+extern char *strsignal (int __sig) noexcept (true);
+
+
+
+extern const char *sigabbrev_np (int __sig) noexcept (true);
+
+
+extern const char *sigdescr_np (int __sig) noexcept (true);
+
+
+
+extern char *__stpcpy (char *__restrict __dest, const char *__restrict __src)
+     noexcept (true) __attribute__ ((__nonnull__ (1, 2)));
+extern char *stpcpy (char *__restrict __dest, const char *__restrict __src)
+     noexcept (true) __attribute__ ((__nonnull__ (1, 2)));
+
+
+
+extern char *__stpncpy (char *__restrict __dest,
+   const char *__restrict __src, size_t __n)
+     noexcept (true) __attribute__ ((__nonnull__ (1, 2)));
+extern char *stpncpy (char *__restrict __dest,
+        const char *__restrict __src, size_t __n)
+     noexcept (true) __attribute__ ((__nonnull__ (1, 2)));
+
+
+
+
+extern size_t strlcpy (char *__restrict __dest,
+         const char *__restrict __src, size_t __n)
+  noexcept (true) __attribute__ ((__nonnull__ (1, 2))) __attribute__ ((__access__ (__write_only__, 1, 3)));
+
+
+
+extern size_t strlcat (char *__restrict __dest,
+         const char *__restrict __src, size_t __n)
+  noexcept (true) __attribute__ ((__nonnull__ (1, 2))) __attribute__ ((__access__ (__read_write__, 1, 3)));
+
+
+
+
+extern int strverscmp (const char *__s1, const char *__s2)
+     noexcept (true) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+
+
+extern char *strfry (char *__string) noexcept (true) __attribute__ ((__nonnull__ (1)));
+
+
+extern void *memfrob (void *__s, size_t __n) noexcept (true) __attribute__ ((__nonnull__ (1)))
+    __attribute__ ((__access__ (__read_write__, 1, 2)));
+
+
+
+
+
+
+
+extern "C++" char *basename (char *__filename)
+     noexcept (true) __asm ("basename") __attribute__ ((__nonnull__ (1)));
+extern "C++" const char *basename (const char *__filename)
+     noexcept (true) __asm ("basename") __attribute__ ((__nonnull__ (1)));
+# 552 "/usr/include/string.h" 3 4
+}
+# 49 "/usr/include/c++/15.1.1/cstring" 2 3
+# 74 "/usr/include/c++/15.1.1/cstring" 3
+extern "C++"
+{
+namespace std __attribute__ ((__visibility__ ("default")))
+{
+
+
+  using ::memchr;
+  using ::memcmp;
+  using ::memcpy;
+  using ::memmove;
+  using ::memset;
+  using ::strcat;
+  using ::strcmp;
+  using ::strcoll;
+  using ::strcpy;
+  using ::strcspn;
+  using ::strerror;
+  using ::strlen;
+  using ::strncat;
+  using ::strncmp;
+  using ::strncpy;
+  using ::strspn;
+
+  using ::strtok;
+
+  using ::strxfrm;
+  using ::strchr;
+  using ::strpbrk;
+  using ::strrchr;
+  using ::strstr;
+# 127 "/usr/include/c++/15.1.1/cstring" 3
+
+}
+}
+# 4 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 2
 # 1 "/usr/include/c++/15.1.1/iostream" 1 3
 # 43 "/usr/include/c++/15.1.1/iostream" 3
 # 1 "/usr/include/c++/15.1.1/ostream" 1 3
@@ -31757,8 +32253,6 @@ private:
 # 1 "/usr/include/c++/15.1.1/bits/version.h" 1 3
 # 42 "/usr/include/c++/15.1.1/exception" 2 3
 
-
-# 43 "/usr/include/c++/15.1.1/exception" 3
 extern "C++" {
 
 namespace std __attribute__ ((__visibility__ ("default")))
@@ -33786,11 +34280,16 @@ extern int pthread_setspecific (pthread_key_t __key,
 extern int pthread_getcpuclockid (pthread_t __thread_id,
       __clockid_t *__clock_id)
      noexcept (true) __attribute__ ((__nonnull__ (2)));
-# 1332 "/usr/include/pthread.h" 3 4
+
+
+
+
+extern pid_t pthread_gettid_np (pthread_t __thread_id);
+# 1337 "/usr/include/pthread.h" 3 4
 extern int pthread_atfork (void (*__prepare) (void),
       void (*__parent) (void),
       void (*__child) (void)) noexcept (true);
-# 1346 "/usr/include/pthread.h" 3 4
+# 1351 "/usr/include/pthread.h" 3 4
 }
 # 36 "/usr/include/c++/15.1.1/x86_64-pc-linux-gnu/bits/gthr-default.h" 2 3
 # 62 "/usr/include/c++/15.1.1/x86_64-pc-linux-gnu/bits/gthr-default.h" 3
@@ -43450,7 +43949,1316 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 
 }
-# 3 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 2
+# 5 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 2
+# 1 "/usr/include/netdb.h" 1 3 4
+# 27 "/usr/include/netdb.h" 3 4
+# 1 "/usr/include/netinet/in.h" 1 3 4
+# 22 "/usr/include/netinet/in.h" 3 4
+# 1 "/usr/include/bits/stdint-uintn.h" 1 3 4
+# 24 "/usr/include/bits/stdint-uintn.h" 3 4
+typedef __uint8_t uint8_t;
+typedef __uint16_t uint16_t;
+typedef __uint32_t uint32_t;
+typedef __uint64_t uint64_t;
+# 23 "/usr/include/netinet/in.h" 2 3 4
+# 1 "/usr/include/sys/socket.h" 1 3 4
+# 24 "/usr/include/sys/socket.h" 3 4
+extern "C" {
+
+# 1 "/usr/include/bits/types/struct_iovec.h" 1 3 4
+# 23 "/usr/include/bits/types/struct_iovec.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/include/stddef.h" 1 3 4
+# 24 "/usr/include/bits/types/struct_iovec.h" 2 3 4
+
+
+struct iovec
+  {
+    void *iov_base;
+    size_t iov_len;
+  };
+# 27 "/usr/include/sys/socket.h" 2 3 4
+
+# 1 "/usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/include/stddef.h" 1 3 4
+# 29 "/usr/include/sys/socket.h" 2 3 4
+
+
+
+
+# 1 "/usr/include/bits/socket.h" 1 3 4
+# 27 "/usr/include/bits/socket.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/include/stddef.h" 1 3 4
+# 28 "/usr/include/bits/socket.h" 2 3 4
+
+
+
+
+
+typedef __socklen_t socklen_t;
+
+
+
+
+# 1 "/usr/include/bits/socket_type.h" 1 3 4
+# 24 "/usr/include/bits/socket_type.h" 3 4
+enum __socket_type
+{
+  SOCK_STREAM = 1,
+
+
+  SOCK_DGRAM = 2,
+
+
+  SOCK_RAW = 3,
+
+  SOCK_RDM = 4,
+
+  SOCK_SEQPACKET = 5,
+
+
+  SOCK_DCCP = 6,
+
+  SOCK_PACKET = 10,
+
+
+
+
+
+
+
+  SOCK_CLOEXEC = 02000000,
+
+
+  SOCK_NONBLOCK = 00004000
+
+
+};
+# 39 "/usr/include/bits/socket.h" 2 3 4
+# 181 "/usr/include/bits/socket.h" 3 4
+# 1 "/usr/include/bits/sockaddr.h" 1 3 4
+# 28 "/usr/include/bits/sockaddr.h" 3 4
+typedef unsigned short int sa_family_t;
+# 182 "/usr/include/bits/socket.h" 2 3 4
+
+
+struct __attribute__ ((__may_alias__)) sockaddr
+  {
+    sa_family_t sa_family;
+    char sa_data[14];
+  };
+# 197 "/usr/include/bits/socket.h" 3 4
+struct __attribute__ ((__may_alias__)) sockaddr_storage
+  {
+    sa_family_t ss_family;
+    char __ss_padding[(128 - (sizeof (unsigned short int)) - sizeof (unsigned long int))];
+    unsigned long int __ss_align;
+  };
+
+
+
+enum
+  {
+    MSG_OOB = 0x01,
+
+    MSG_PEEK = 0x02,
+
+    MSG_DONTROUTE = 0x04,
+
+
+
+    MSG_TRYHARD = MSG_DONTROUTE,
+
+
+    MSG_CTRUNC = 0x08,
+
+    MSG_PROXY = 0x10,
+
+    MSG_TRUNC = 0x20,
+
+    MSG_DONTWAIT = 0x40,
+
+    MSG_EOR = 0x80,
+
+    MSG_WAITALL = 0x100,
+
+    MSG_FIN = 0x200,
+
+    MSG_SYN = 0x400,
+
+    MSG_CONFIRM = 0x800,
+
+    MSG_RST = 0x1000,
+
+    MSG_ERRQUEUE = 0x2000,
+
+    MSG_NOSIGNAL = 0x4000,
+
+    MSG_MORE = 0x8000,
+
+    MSG_WAITFORONE = 0x10000,
+
+    MSG_BATCH = 0x40000,
+
+    MSG_SOCK_DEVMEM = 0x2000000,
+
+    MSG_ZEROCOPY = 0x4000000,
+
+    MSG_FASTOPEN = 0x20000000,
+
+
+    MSG_CMSG_CLOEXEC = 0x40000000
+
+
+
+  };
+
+
+
+
+struct msghdr
+  {
+    void *msg_name;
+    socklen_t msg_namelen;
+
+    struct iovec *msg_iov;
+    size_t msg_iovlen;
+
+    void *msg_control;
+    size_t msg_controllen;
+
+
+
+
+    int msg_flags;
+  };
+
+
+struct cmsghdr
+  {
+    size_t cmsg_len;
+
+
+
+
+    int cmsg_level;
+    int cmsg_type;
+
+    __extension__ unsigned char __cmsg_data [];
+
+  };
+# 319 "/usr/include/bits/socket.h" 3 4
+extern struct cmsghdr *__cmsg_nxthdr (struct msghdr *__mhdr,
+          struct cmsghdr *__cmsg) noexcept (true);
+# 366 "/usr/include/bits/socket.h" 3 4
+enum
+  {
+    SCM_RIGHTS = 0x01
+
+
+    , SCM_CREDENTIALS = 0x02
+
+    , SCM_SECURITY = 0x03
+
+    , SCM_PIDFD = 0x04
+
+
+  };
+
+
+
+struct ucred
+{
+  pid_t pid;
+  uid_t uid;
+  gid_t gid;
+};
+
+
+
+
+# 1 "/usr/include/asm/socket.h" 1 3 4
+# 1 "/usr/include/asm-generic/socket.h" 1 3 4
+
+
+
+
+
+# 1 "/usr/include/asm/sockios.h" 1 3 4
+# 1 "/usr/include/asm-generic/sockios.h" 1 3 4
+# 2 "/usr/include/asm/sockios.h" 2 3 4
+# 7 "/usr/include/asm-generic/socket.h" 2 3 4
+# 2 "/usr/include/asm/socket.h" 2 3 4
+# 393 "/usr/include/bits/socket.h" 2 3 4
+
+
+
+
+
+
+struct linger
+  {
+    int l_onoff;
+    int l_linger;
+  };
+# 34 "/usr/include/sys/socket.h" 2 3 4
+
+
+# 1 "/usr/include/bits/types/struct_osockaddr.h" 1 3 4
+
+
+
+
+
+struct osockaddr
+{
+  unsigned short int sa_family;
+  unsigned char sa_data[14];
+};
+# 37 "/usr/include/sys/socket.h" 2 3 4
+
+
+
+
+enum
+{
+  SHUT_RD = 0,
+
+  SHUT_WR,
+
+  SHUT_RDWR
+
+};
+# 90 "/usr/include/sys/socket.h" 3 4
+struct mmsghdr
+  {
+    struct msghdr msg_hdr;
+    unsigned int msg_len;
+
+  };
+
+
+
+
+
+
+extern int socket (int __domain, int __type, int __protocol) noexcept (true);
+
+
+
+
+
+extern int socketpair (int __domain, int __type, int __protocol,
+         int __fds[2]) noexcept (true);
+
+
+extern int bind (int __fd, const struct sockaddr * __addr, socklen_t __len)
+     noexcept (true);
+
+
+extern int getsockname (int __fd, struct sockaddr *__restrict __addr,
+   socklen_t *__restrict __len) noexcept (true);
+# 126 "/usr/include/sys/socket.h" 3 4
+extern int connect (int __fd, const struct sockaddr * __addr, socklen_t __len);
+
+
+
+extern int getpeername (int __fd, struct sockaddr *__restrict __addr,
+   socklen_t *__restrict __len) noexcept (true);
+
+
+
+
+
+
+extern ssize_t send (int __fd, const void *__buf, size_t __n, int __flags);
+
+
+
+
+
+
+extern ssize_t recv (int __fd, void *__buf, size_t __n, int __flags);
+
+
+
+
+
+
+extern ssize_t sendto (int __fd, const void *__buf, size_t __n,
+         int __flags, const struct sockaddr * __addr,
+         socklen_t __addr_len);
+# 163 "/usr/include/sys/socket.h" 3 4
+extern ssize_t recvfrom (int __fd, void *__restrict __buf, size_t __n,
+    int __flags, struct sockaddr *__restrict __addr,
+    socklen_t *__restrict __addr_len);
+# 174 "/usr/include/sys/socket.h" 3 4
+extern ssize_t sendmsg (int __fd, const struct msghdr *__message,
+   int __flags);
+# 195 "/usr/include/sys/socket.h" 3 4
+extern int sendmmsg (int __fd, struct mmsghdr *__vmessages,
+       unsigned int __vlen, int __flags);
+# 216 "/usr/include/sys/socket.h" 3 4
+extern ssize_t recvmsg (int __fd, struct msghdr *__message, int __flags);
+# 235 "/usr/include/sys/socket.h" 3 4
+extern int recvmmsg (int __fd, struct mmsghdr *__vmessages,
+       unsigned int __vlen, int __flags,
+       struct timespec *__tmo);
+# 255 "/usr/include/sys/socket.h" 3 4
+extern int getsockopt (int __fd, int __level, int __optname,
+         void *__restrict __optval,
+         socklen_t *__restrict __optlen) noexcept (true);
+# 277 "/usr/include/sys/socket.h" 3 4
+extern int setsockopt (int __fd, int __level, int __optname,
+         const void *__optval, socklen_t __optlen) noexcept (true);
+# 296 "/usr/include/sys/socket.h" 3 4
+extern int listen (int __fd, int __n) noexcept (true);
+# 306 "/usr/include/sys/socket.h" 3 4
+extern int accept (int __fd, struct sockaddr *__restrict __addr,
+     socklen_t *__restrict __addr_len);
+
+
+
+
+
+
+extern int accept4 (int __fd, struct sockaddr *__restrict __addr,
+      socklen_t *__restrict __addr_len, int __flags);
+# 324 "/usr/include/sys/socket.h" 3 4
+extern int shutdown (int __fd, int __how) noexcept (true);
+
+
+
+
+extern int sockatmark (int __fd) noexcept (true);
+
+
+
+
+
+
+
+extern int isfdtype (int __fd, int __fdtype) noexcept (true);
+# 346 "/usr/include/sys/socket.h" 3 4
+}
+# 24 "/usr/include/netinet/in.h" 2 3 4
+
+
+
+extern "C" {
+
+
+typedef uint32_t in_addr_t;
+struct in_addr
+  {
+    in_addr_t s_addr;
+  };
+
+
+# 1 "/usr/include/bits/in.h" 1 3 4
+# 145 "/usr/include/bits/in.h" 3 4
+struct ip_opts
+  {
+    struct in_addr ip_dst;
+    char ip_opts[40];
+  };
+
+
+struct in_pktinfo
+  {
+    int ipi_ifindex;
+    struct in_addr ipi_spec_dst;
+    struct in_addr ipi_addr;
+  };
+# 38 "/usr/include/netinet/in.h" 2 3 4
+
+
+enum
+  {
+    IPPROTO_IP = 0,
+
+    IPPROTO_ICMP = 1,
+
+    IPPROTO_IGMP = 2,
+
+    IPPROTO_IPIP = 4,
+
+    IPPROTO_TCP = 6,
+
+    IPPROTO_EGP = 8,
+
+    IPPROTO_PUP = 12,
+
+    IPPROTO_UDP = 17,
+
+    IPPROTO_IDP = 22,
+
+    IPPROTO_TP = 29,
+
+    IPPROTO_DCCP = 33,
+
+    IPPROTO_IPV6 = 41,
+
+    IPPROTO_RSVP = 46,
+
+    IPPROTO_GRE = 47,
+
+    IPPROTO_ESP = 50,
+
+    IPPROTO_AH = 51,
+
+    IPPROTO_MTP = 92,
+
+    IPPROTO_BEETPH = 94,
+
+    IPPROTO_ENCAP = 98,
+
+    IPPROTO_PIM = 103,
+
+    IPPROTO_COMP = 108,
+
+    IPPROTO_L2TP = 115,
+
+    IPPROTO_SCTP = 132,
+
+    IPPROTO_UDPLITE = 136,
+
+    IPPROTO_MPLS = 137,
+
+    IPPROTO_ETHERNET = 143,
+
+    IPPROTO_RAW = 255,
+
+    IPPROTO_SMC = 256,
+
+    IPPROTO_MPTCP = 262,
+
+    IPPROTO_MAX
+  };
+
+
+
+
+
+enum
+  {
+    IPPROTO_HOPOPTS = 0,
+
+    IPPROTO_ROUTING = 43,
+
+    IPPROTO_FRAGMENT = 44,
+
+    IPPROTO_ICMPV6 = 58,
+
+    IPPROTO_NONE = 59,
+
+    IPPROTO_DSTOPTS = 60,
+
+    IPPROTO_MH = 135
+
+  };
+
+
+
+typedef uint16_t in_port_t;
+
+
+enum
+  {
+    IPPORT_ECHO = 7,
+    IPPORT_DISCARD = 9,
+    IPPORT_SYSTAT = 11,
+    IPPORT_DAYTIME = 13,
+    IPPORT_NETSTAT = 15,
+    IPPORT_FTP = 21,
+    IPPORT_TELNET = 23,
+    IPPORT_SMTP = 25,
+    IPPORT_TIMESERVER = 37,
+    IPPORT_NAMESERVER = 42,
+    IPPORT_WHOIS = 43,
+    IPPORT_MTP = 57,
+
+    IPPORT_TFTP = 69,
+    IPPORT_RJE = 77,
+    IPPORT_FINGER = 79,
+    IPPORT_TTYLINK = 87,
+    IPPORT_SUPDUP = 95,
+
+
+    IPPORT_EXECSERVER = 512,
+    IPPORT_LOGINSERVER = 513,
+    IPPORT_CMDSERVER = 514,
+    IPPORT_EFSSERVER = 520,
+
+
+    IPPORT_BIFFUDP = 512,
+    IPPORT_WHOSERVER = 513,
+    IPPORT_ROUTESERVER = 520,
+
+
+    IPPORT_RESERVED = 1024,
+
+
+    IPPORT_USERRESERVED = 5000
+  };
+# 223 "/usr/include/netinet/in.h" 3 4
+struct in6_addr
+  {
+    union
+      {
+ uint8_t __u6_addr8[16];
+ uint16_t __u6_addr16[8];
+ uint32_t __u6_addr32[4];
+      } __in6_u;
+
+
+
+
+
+  };
+
+
+extern const struct in6_addr in6addr_any;
+extern const struct in6_addr in6addr_loopback;
+# 249 "/usr/include/netinet/in.h" 3 4
+struct __attribute__ ((__may_alias__)) sockaddr_in
+  {
+    sa_family_t sin_family;
+    in_port_t sin_port;
+    struct in_addr sin_addr;
+
+
+    unsigned char sin_zero[sizeof (struct sockaddr)
+      - (sizeof (unsigned short int))
+      - sizeof (in_port_t)
+      - sizeof (struct in_addr)];
+  };
+
+
+
+
+
+struct __attribute__ ((__may_alias__)) sockaddr_in6
+  {
+    sa_family_t sin6_family;
+    in_port_t sin6_port;
+    uint32_t sin6_flowinfo;
+    struct in6_addr sin6_addr;
+    uint32_t sin6_scope_id;
+  };
+
+
+
+
+struct ip_mreq
+  {
+
+    struct in_addr imr_multiaddr;
+
+
+    struct in_addr imr_interface;
+  };
+
+
+struct ip_mreqn
+  {
+
+    struct in_addr imr_multiaddr;
+
+
+    struct in_addr imr_address;
+
+
+    int imr_ifindex;
+  };
+
+struct ip_mreq_source
+  {
+
+    struct in_addr imr_multiaddr;
+
+
+    struct in_addr imr_interface;
+
+
+    struct in_addr imr_sourceaddr;
+  };
+
+
+
+
+struct ipv6_mreq
+  {
+
+    struct in6_addr ipv6mr_multiaddr;
+
+
+    unsigned int ipv6mr_interface;
+  };
+
+
+
+
+struct group_req
+  {
+
+    uint32_t gr_interface;
+
+
+    struct sockaddr_storage gr_group;
+  };
+
+struct group_source_req
+  {
+
+    uint32_t gsr_interface;
+
+
+    struct sockaddr_storage gsr_group;
+
+
+    struct sockaddr_storage gsr_source;
+  };
+
+
+
+struct ip_msfilter
+  {
+
+    struct in_addr imsf_multiaddr;
+
+
+    struct in_addr imsf_interface;
+
+
+    uint32_t imsf_fmode;
+
+
+    uint32_t imsf_numsrc;
+
+    struct in_addr imsf_slist[1];
+  };
+
+
+
+
+
+struct group_filter
+  {
+
+    uint32_t gf_interface;
+
+
+    struct sockaddr_storage gf_group;
+
+
+    uint32_t gf_fmode;
+
+
+    uint32_t gf_numsrc;
+
+    struct sockaddr_storage gf_slist[1];
+};
+# 401 "/usr/include/netinet/in.h" 3 4
+extern uint32_t ntohl (uint32_t __netlong) noexcept (true) __attribute__ ((__const__));
+extern uint16_t ntohs (uint16_t __netshort)
+     noexcept (true) __attribute__ ((__const__));
+extern uint32_t htonl (uint32_t __hostlong)
+     noexcept (true) __attribute__ ((__const__));
+extern uint16_t htons (uint16_t __hostshort)
+     noexcept (true) __attribute__ ((__const__));
+
+
+
+
+# 1 "/usr/include/bits/byteswap.h" 1 3 4
+# 413 "/usr/include/netinet/in.h" 2 3 4
+# 1 "/usr/include/bits/uintn-identity.h" 1 3 4
+# 414 "/usr/include/netinet/in.h" 2 3 4
+# 529 "/usr/include/netinet/in.h" 3 4
+extern int bindresvport (int __sockfd, struct sockaddr_in *__sock_in) noexcept (true);
+
+
+extern int bindresvport6 (int __sockfd, struct sockaddr_in6 *__sock_in)
+     noexcept (true);
+# 559 "/usr/include/netinet/in.h" 3 4
+struct cmsghdr;
+
+
+
+struct in6_pktinfo
+  {
+    struct in6_addr ipi6_addr;
+    unsigned int ipi6_ifindex;
+  };
+
+
+struct ip6_mtuinfo
+  {
+    struct sockaddr_in6 ip6m_addr;
+    uint32_t ip6m_mtu;
+  };
+
+
+
+extern int inet6_option_space (int __nbytes)
+     noexcept (true) __attribute__ ((__deprecated__));
+extern int inet6_option_init (void *__bp, struct cmsghdr **__cmsgp,
+         int __type) noexcept (true) __attribute__ ((__deprecated__));
+extern int inet6_option_append (struct cmsghdr *__cmsg,
+    const uint8_t *__typep, int __multx,
+    int __plusy) noexcept (true) __attribute__ ((__deprecated__));
+extern uint8_t *inet6_option_alloc (struct cmsghdr *__cmsg, int __datalen,
+        int __multx, int __plusy)
+     noexcept (true) __attribute__ ((__deprecated__));
+extern int inet6_option_next (const struct cmsghdr *__cmsg,
+         uint8_t **__tptrp)
+     noexcept (true) __attribute__ ((__deprecated__));
+extern int inet6_option_find (const struct cmsghdr *__cmsg,
+         uint8_t **__tptrp, int __type)
+     noexcept (true) __attribute__ ((__deprecated__));
+
+
+
+extern int inet6_opt_init (void *__extbuf, socklen_t __extlen) noexcept (true);
+extern int inet6_opt_append (void *__extbuf, socklen_t __extlen, int __offset,
+        uint8_t __type, socklen_t __len, uint8_t __align,
+        void **__databufp) noexcept (true);
+extern int inet6_opt_finish (void *__extbuf, socklen_t __extlen, int __offset)
+     noexcept (true);
+extern int inet6_opt_set_val (void *__databuf, int __offset, void *__val,
+         socklen_t __vallen) noexcept (true);
+extern int inet6_opt_next (void *__extbuf, socklen_t __extlen, int __offset,
+      uint8_t *__typep, socklen_t *__lenp,
+      void **__databufp) noexcept (true);
+extern int inet6_opt_find (void *__extbuf, socklen_t __extlen, int __offset,
+      uint8_t __type, socklen_t *__lenp,
+      void **__databufp) noexcept (true);
+extern int inet6_opt_get_val (void *__databuf, int __offset, void *__val,
+         socklen_t __vallen) noexcept (true);
+
+
+
+extern socklen_t inet6_rth_space (int __type, int __segments) noexcept (true);
+extern void *inet6_rth_init (void *__bp, socklen_t __bp_len, int __type,
+        int __segments) noexcept (true);
+extern int inet6_rth_add (void *__bp, const struct in6_addr *__addr) noexcept (true);
+extern int inet6_rth_reverse (const void *__in, void *__out) noexcept (true);
+extern int inet6_rth_segments (const void *__bp) noexcept (true);
+extern struct in6_addr *inet6_rth_getaddr (const void *__bp, int __index)
+     noexcept (true);
+
+
+
+
+
+extern int getipv4sourcefilter (int __s, struct in_addr __interface_addr,
+    struct in_addr __group, uint32_t *__fmode,
+    uint32_t *__numsrc, struct in_addr *__slist)
+     noexcept (true);
+
+
+extern int setipv4sourcefilter (int __s, struct in_addr __interface_addr,
+    struct in_addr __group, uint32_t __fmode,
+    uint32_t __numsrc,
+    const struct in_addr *__slist)
+     noexcept (true);
+
+
+
+extern int getsourcefilter (int __s, uint32_t __interface_addr,
+       const struct sockaddr *__group,
+       socklen_t __grouplen, uint32_t *__fmode,
+       uint32_t *__numsrc,
+       struct sockaddr_storage *__slist) noexcept (true);
+
+
+extern int setsourcefilter (int __s, uint32_t __interface_addr,
+       const struct sockaddr *__group,
+       socklen_t __grouplen, uint32_t __fmode,
+       uint32_t __numsrc,
+       const struct sockaddr_storage *__slist) noexcept (true);
+
+
+}
+# 28 "/usr/include/netdb.h" 2 3 4
+
+
+
+
+# 1 "/usr/include/rpc/netdb.h" 1 3 4
+# 42 "/usr/include/rpc/netdb.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/include/stddef.h" 1 3 4
+# 43 "/usr/include/rpc/netdb.h" 2 3 4
+
+extern "C" {
+
+struct rpcent
+{
+  char *r_name;
+  char **r_aliases;
+  int r_number;
+};
+
+extern void setrpcent (int __stayopen) noexcept (true);
+extern void endrpcent (void) noexcept (true);
+extern struct rpcent *getrpcbyname (const char *__name) noexcept (true);
+extern struct rpcent *getrpcbynumber (int __number) noexcept (true);
+extern struct rpcent *getrpcent (void) noexcept (true);
+
+
+extern int getrpcbyname_r (const char *__name, struct rpcent *__result_buf,
+      char *__buffer, size_t __buflen,
+      struct rpcent **__result) noexcept (true);
+
+extern int getrpcbynumber_r (int __number, struct rpcent *__result_buf,
+        char *__buffer, size_t __buflen,
+        struct rpcent **__result) noexcept (true);
+
+extern int getrpcent_r (struct rpcent *__result_buf, char *__buffer,
+   size_t __buflen, struct rpcent **__result) noexcept (true);
+
+
+}
+# 33 "/usr/include/netdb.h" 2 3 4
+
+
+
+# 1 "/usr/include/bits/types/sigevent_t.h" 1 3 4
+
+
+
+# 1 "/usr/include/bits/wordsize.h" 1 3 4
+# 5 "/usr/include/bits/types/sigevent_t.h" 2 3 4
+
+# 1 "/usr/include/bits/types/__sigval_t.h" 1 3 4
+# 24 "/usr/include/bits/types/__sigval_t.h" 3 4
+union sigval
+{
+  int sival_int;
+  void *sival_ptr;
+};
+
+typedef union sigval __sigval_t;
+# 7 "/usr/include/bits/types/sigevent_t.h" 2 3 4
+# 22 "/usr/include/bits/types/sigevent_t.h" 3 4
+typedef struct sigevent
+  {
+    __sigval_t sigev_value;
+    int sigev_signo;
+    int sigev_notify;
+
+    union
+      {
+ int _pad[((64 / sizeof (int)) - 4)];
+
+
+
+ __pid_t _tid;
+
+ struct
+   {
+     void (*_function) (__sigval_t);
+     pthread_attr_t *_attribute;
+   } _sigev_thread;
+      } _sigev_un;
+  } sigevent_t;
+# 37 "/usr/include/netdb.h" 2 3 4
+
+
+
+# 1 "/usr/include/bits/netdb.h" 1 3 4
+# 26 "/usr/include/bits/netdb.h" 3 4
+struct netent
+{
+  char *n_name;
+  char **n_aliases;
+  int n_addrtype;
+  uint32_t n_net;
+};
+# 41 "/usr/include/netdb.h" 2 3 4
+# 51 "/usr/include/netdb.h" 3 4
+extern "C" {
+
+
+
+
+
+
+
+extern int *__h_errno_location (void) noexcept (true) __attribute__ ((__const__));
+# 90 "/usr/include/netdb.h" 3 4
+extern void herror (const char *__str) noexcept (true);
+
+
+extern const char *hstrerror (int __err_num) noexcept (true);
+
+
+
+
+struct hostent
+{
+  char *h_name;
+  char **h_aliases;
+  int h_addrtype;
+  int h_length;
+  char **h_addr_list;
+
+
+
+};
+
+
+
+
+
+
+extern void sethostent (int __stay_open);
+
+
+
+
+
+extern void endhostent (void);
+
+
+
+
+
+
+extern struct hostent *gethostent (void);
+
+
+
+
+
+
+extern struct hostent *gethostbyaddr (const void *__addr, __socklen_t __len,
+          int __type);
+
+
+
+
+
+extern struct hostent *gethostbyname (const char *__name);
+# 153 "/usr/include/netdb.h" 3 4
+extern struct hostent *gethostbyname2 (const char *__name, int __af);
+# 165 "/usr/include/netdb.h" 3 4
+extern int gethostent_r (struct hostent *__restrict __result_buf,
+    char *__restrict __buf, size_t __buflen,
+    struct hostent **__restrict __result,
+    int *__restrict __h_errnop);
+
+extern int gethostbyaddr_r (const void *__restrict __addr, __socklen_t __len,
+       int __type,
+       struct hostent *__restrict __result_buf,
+       char *__restrict __buf, size_t __buflen,
+       struct hostent **__restrict __result,
+       int *__restrict __h_errnop);
+
+extern int gethostbyname_r (const char *__restrict __name,
+       struct hostent *__restrict __result_buf,
+       char *__restrict __buf, size_t __buflen,
+       struct hostent **__restrict __result,
+       int *__restrict __h_errnop);
+
+extern int gethostbyname2_r (const char *__restrict __name, int __af,
+        struct hostent *__restrict __result_buf,
+        char *__restrict __buf, size_t __buflen,
+        struct hostent **__restrict __result,
+        int *__restrict __h_errnop);
+# 196 "/usr/include/netdb.h" 3 4
+extern void setnetent (int __stay_open);
+
+
+
+
+
+extern void endnetent (void);
+
+
+
+
+
+
+extern struct netent *getnetent (void);
+
+
+
+
+
+
+extern struct netent *getnetbyaddr (uint32_t __net, int __type);
+
+
+
+
+
+extern struct netent *getnetbyname (const char *__name);
+# 235 "/usr/include/netdb.h" 3 4
+extern int getnetent_r (struct netent *__restrict __result_buf,
+   char *__restrict __buf, size_t __buflen,
+   struct netent **__restrict __result,
+   int *__restrict __h_errnop);
+
+extern int getnetbyaddr_r (uint32_t __net, int __type,
+      struct netent *__restrict __result_buf,
+      char *__restrict __buf, size_t __buflen,
+      struct netent **__restrict __result,
+      int *__restrict __h_errnop);
+
+extern int getnetbyname_r (const char *__restrict __name,
+      struct netent *__restrict __result_buf,
+      char *__restrict __buf, size_t __buflen,
+      struct netent **__restrict __result,
+      int *__restrict __h_errnop);
+
+
+
+
+struct servent
+{
+  char *s_name;
+  char **s_aliases;
+  int s_port;
+  char *s_proto;
+};
+
+
+
+
+
+
+extern void setservent (int __stay_open);
+
+
+
+
+
+extern void endservent (void);
+
+
+
+
+
+
+extern struct servent *getservent (void);
+
+
+
+
+
+
+extern struct servent *getservbyname (const char *__name, const char *__proto);
+
+
+
+
+
+
+extern struct servent *getservbyport (int __port, const char *__proto);
+# 306 "/usr/include/netdb.h" 3 4
+extern int getservent_r (struct servent *__restrict __result_buf,
+    char *__restrict __buf, size_t __buflen,
+    struct servent **__restrict __result);
+
+extern int getservbyname_r (const char *__restrict __name,
+       const char *__restrict __proto,
+       struct servent *__restrict __result_buf,
+       char *__restrict __buf, size_t __buflen,
+       struct servent **__restrict __result);
+
+extern int getservbyport_r (int __port, const char *__restrict __proto,
+       struct servent *__restrict __result_buf,
+       char *__restrict __buf, size_t __buflen,
+       struct servent **__restrict __result);
+
+
+
+
+struct protoent
+{
+  char *p_name;
+  char **p_aliases;
+  int p_proto;
+};
+
+
+
+
+
+
+extern void setprotoent (int __stay_open);
+
+
+
+
+
+extern void endprotoent (void);
+
+
+
+
+
+
+extern struct protoent *getprotoent (void);
+
+
+
+
+
+extern struct protoent *getprotobyname (const char *__name);
+
+
+
+
+
+extern struct protoent *getprotobynumber (int __proto);
+# 372 "/usr/include/netdb.h" 3 4
+extern int getprotoent_r (struct protoent *__restrict __result_buf,
+     char *__restrict __buf, size_t __buflen,
+     struct protoent **__restrict __result);
+
+extern int getprotobyname_r (const char *__restrict __name,
+        struct protoent *__restrict __result_buf,
+        char *__restrict __buf, size_t __buflen,
+        struct protoent **__restrict __result);
+
+extern int getprotobynumber_r (int __proto,
+          struct protoent *__restrict __result_buf,
+          char *__restrict __buf, size_t __buflen,
+          struct protoent **__restrict __result);
+# 393 "/usr/include/netdb.h" 3 4
+extern int setnetgrent (const char *__netgroup);
+
+
+
+
+
+
+
+extern void endnetgrent (void);
+# 410 "/usr/include/netdb.h" 3 4
+extern int getnetgrent (char **__restrict __hostp,
+   char **__restrict __userp,
+   char **__restrict __domainp);
+# 421 "/usr/include/netdb.h" 3 4
+extern int innetgr (const char *__netgroup, const char *__host,
+      const char *__user, const char *__domain);
+
+
+
+
+
+
+
+extern int getnetgrent_r (char **__restrict __hostp,
+     char **__restrict __userp,
+     char **__restrict __domainp,
+     char *__restrict __buffer, size_t __buflen);
+# 449 "/usr/include/netdb.h" 3 4
+extern int rcmd (char **__restrict __ahost, unsigned short int __rport,
+   const char *__restrict __locuser,
+   const char *__restrict __remuser,
+   const char *__restrict __cmd, int *__restrict __fd2p);
+# 461 "/usr/include/netdb.h" 3 4
+extern int rcmd_af (char **__restrict __ahost, unsigned short int __rport,
+      const char *__restrict __locuser,
+      const char *__restrict __remuser,
+      const char *__restrict __cmd, int *__restrict __fd2p,
+      sa_family_t __af);
+# 477 "/usr/include/netdb.h" 3 4
+extern int rexec (char **__restrict __ahost, int __rport,
+    const char *__restrict __name,
+    const char *__restrict __pass,
+    const char *__restrict __cmd, int *__restrict __fd2p);
+# 489 "/usr/include/netdb.h" 3 4
+extern int rexec_af (char **__restrict __ahost, int __rport,
+       const char *__restrict __name,
+       const char *__restrict __pass,
+       const char *__restrict __cmd, int *__restrict __fd2p,
+       sa_family_t __af);
+# 503 "/usr/include/netdb.h" 3 4
+extern int ruserok (const char *__rhost, int __suser,
+      const char *__remuser, const char *__locuser);
+# 513 "/usr/include/netdb.h" 3 4
+extern int ruserok_af (const char *__rhost, int __suser,
+         const char *__remuser, const char *__locuser,
+         sa_family_t __af);
+# 526 "/usr/include/netdb.h" 3 4
+extern int iruserok (uint32_t __raddr, int __suser,
+       const char *__remuser, const char *__locuser);
+# 537 "/usr/include/netdb.h" 3 4
+extern int iruserok_af (const void *__raddr, int __suser,
+   const char *__remuser, const char *__locuser,
+   sa_family_t __af);
+# 549 "/usr/include/netdb.h" 3 4
+extern int rresvport (int *__alport);
+# 558 "/usr/include/netdb.h" 3 4
+extern int rresvport_af (int *__alport, sa_family_t __af);
+
+
+
+
+
+
+struct addrinfo
+{
+  int ai_flags;
+  int ai_family;
+  int ai_socktype;
+  int ai_protocol;
+  socklen_t ai_addrlen;
+  struct sockaddr *ai_addr;
+  char *ai_canonname;
+  struct addrinfo *ai_next;
+};
+
+
+
+struct gaicb
+{
+  const char *ar_name;
+  const char *ar_service;
+  const struct addrinfo *ar_request;
+  struct addrinfo *ar_result;
+
+  int __return;
+  int __glibc_reserved[5];
+};
+# 660 "/usr/include/netdb.h" 3 4
+extern int getaddrinfo (const char *__restrict __name,
+   const char *__restrict __service,
+   const struct addrinfo *__restrict __req,
+   struct addrinfo **__restrict __pai);
+
+
+extern void freeaddrinfo (struct addrinfo *__ai) noexcept (true);
+
+
+extern const char *gai_strerror (int __ecode) noexcept (true);
+
+
+
+
+
+extern int getnameinfo (const struct sockaddr *__restrict __sa,
+   socklen_t __salen, char *__restrict __host,
+   socklen_t __hostlen, char *__restrict __serv,
+   socklen_t __servlen, int __flags);
+# 690 "/usr/include/netdb.h" 3 4
+extern int getaddrinfo_a (int __mode, struct gaicb *__list[],
+     int __ent, struct sigevent *__restrict __sig);
+# 701 "/usr/include/netdb.h" 3 4
+extern int gai_suspend (const struct gaicb *const __list[], int __ent,
+   const struct timespec *__timeout);
+# 716 "/usr/include/netdb.h" 3 4
+extern int gai_error (struct gaicb *__req) noexcept (true);
+
+
+extern int gai_cancel (struct gaicb *__gaicbp) noexcept (true);
+
+
+}
+# 6 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 2
 # 1 "/usr/include/c++/15.1.1/thread" 1 3
 # 44 "/usr/include/c++/15.1.1/thread" 3
 # 1 "/usr/include/c++/15.1.1/stop_token" 1 3
@@ -43482,6 +45290,8 @@ namespace std __attribute__ ((__visibility__ ("default")))
 # 47 "/usr/include/c++/15.1.1/cstdint" 3
 # 1 "/usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/include/stdint.h" 1 3 4
 # 9 "/usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/include/stdint.h" 3 4
+ 
+# 9 "/usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/include/stdint.h" 3 4
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpedantic"
 # 1 "/usr/include/stdint.h" 1 3 4
@@ -43492,23 +45302,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 # 1 "/usr/include/bits/wordsize.h" 1 3 4
 # 30 "/usr/include/stdint.h" 2 3 4
-
-
-
-
-
-
-
-# 1 "/usr/include/bits/stdint-uintn.h" 1 3 4
-# 24 "/usr/include/bits/stdint-uintn.h" 3 4
-typedef __uint8_t uint8_t;
-typedef __uint16_t uint16_t;
-typedef __uint32_t uint32_t;
-typedef __uint64_t uint64_t;
-# 38 "/usr/include/stdint.h" 2 3 4
-
-
-
+# 41 "/usr/include/stdint.h" 3 4
 # 1 "/usr/include/bits/stdint-least.h" 1 3 4
 # 25 "/usr/include/bits/stdint-least.h" 3 4
 typedef __int_least8_t int_least8_t;
@@ -43670,8 +45464,6 @@ extern "C" {
 # 226 "/usr/include/unistd.h" 3 4
 # 1 "/usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/include/stddef.h" 1 3 4
 # 227 "/usr/include/unistd.h" 2 3 4
-# 274 "/usr/include/unistd.h" 3 4
-typedef __socklen_t socklen_t;
 # 287 "/usr/include/unistd.h" 3 4
 extern int access (const char *__name, int __type) noexcept (true) __attribute__ ((__nonnull__ (1)));
 
@@ -53976,6 +55768,7 @@ inline namespace _V2 {
       now() noexcept;
 
 
+      [[__gnu__::__always_inline__]]
       static std::time_t
       to_time_t(const time_point& __t) noexcept
       {
@@ -53983,6 +55776,7 @@ inline namespace _V2 {
       (__t.time_since_epoch()).count());
       }
 
+      [[__gnu__::__always_inline__]]
       static time_point
       from_time_t(std::time_t __t) noexcept
       {
@@ -53991,7 +55785,7 @@ inline namespace _V2 {
         (__from(chrono::seconds(__t)));
       }
     };
-# 1270 "/usr/include/c++/15.1.1/bits/chrono.h" 3
+# 1272 "/usr/include/c++/15.1.1/bits/chrono.h" 3
     struct steady_clock
     {
       typedef chrono::nanoseconds duration;
@@ -54004,7 +55798,7 @@ inline namespace _V2 {
       static time_point
       now() noexcept;
     };
-# 1292 "/usr/include/c++/15.1.1/bits/chrono.h" 3
+# 1294 "/usr/include/c++/15.1.1/bits/chrono.h" 3
     using high_resolution_clock = system_clock;
 
 }
@@ -54029,13 +55823,13 @@ inline namespace _V2 {
     template<> inline constexpr bool is_clock_v<system_clock> = true;
     template<> inline constexpr bool is_clock_v<steady_clock> = true;
     template<> inline constexpr bool is_clock_v<file_clock> = true;
-# 1327 "/usr/include/c++/15.1.1/bits/chrono.h" 3
+# 1329 "/usr/include/c++/15.1.1/bits/chrono.h" 3
   }
 
 
   inline namespace literals
   {
-# 1356 "/usr/include/c++/15.1.1/bits/chrono.h" 3
+# 1358 "/usr/include/c++/15.1.1/bits/chrono.h" 3
   inline namespace chrono_literals
   {
 
@@ -55864,829 +57658,10 @@ namespace std __attribute__ ((__visibility__ ("default")))
 # 376 "/usr/include/c++/15.1.1/thread" 3
 
 }
-# 4 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 2
+# 7 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 2
 
 # 1 "/usr/include/arpa/inet.h" 1 3 4
-# 22 "/usr/include/arpa/inet.h" 3 4
-# 1 "/usr/include/netinet/in.h" 1 3 4
-# 23 "/usr/include/netinet/in.h" 3 4
-# 1 "/usr/include/sys/socket.h" 1 3 4
-# 24 "/usr/include/sys/socket.h" 3 4
-extern "C" {
-
-# 1 "/usr/include/bits/types/struct_iovec.h" 1 3 4
-# 23 "/usr/include/bits/types/struct_iovec.h" 3 4
-# 1 "/usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/include/stddef.h" 1 3 4
-# 24 "/usr/include/bits/types/struct_iovec.h" 2 3 4
-
-
-struct iovec
-  {
-    void *iov_base;
-    size_t iov_len;
-  };
-# 27 "/usr/include/sys/socket.h" 2 3 4
-
-# 1 "/usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/include/stddef.h" 1 3 4
-# 29 "/usr/include/sys/socket.h" 2 3 4
-
-
-
-
-# 1 "/usr/include/bits/socket.h" 1 3 4
-# 27 "/usr/include/bits/socket.h" 3 4
-# 1 "/usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/include/stddef.h" 1 3 4
-# 28 "/usr/include/bits/socket.h" 2 3 4
-# 38 "/usr/include/bits/socket.h" 3 4
-# 1 "/usr/include/bits/socket_type.h" 1 3 4
-# 24 "/usr/include/bits/socket_type.h" 3 4
-enum __socket_type
-{
-  SOCK_STREAM = 1,
-
-
-  SOCK_DGRAM = 2,
-
-
-  SOCK_RAW = 3,
-
-  SOCK_RDM = 4,
-
-  SOCK_SEQPACKET = 5,
-
-
-  SOCK_DCCP = 6,
-
-  SOCK_PACKET = 10,
-
-
-
-
-
-
-
-  SOCK_CLOEXEC = 02000000,
-
-
-  SOCK_NONBLOCK = 00004000
-
-
-};
-# 39 "/usr/include/bits/socket.h" 2 3 4
-# 181 "/usr/include/bits/socket.h" 3 4
-# 1 "/usr/include/bits/sockaddr.h" 1 3 4
-# 28 "/usr/include/bits/sockaddr.h" 3 4
-typedef unsigned short int sa_family_t;
-# 182 "/usr/include/bits/socket.h" 2 3 4
-
-
-struct __attribute__ ((__may_alias__)) sockaddr
-  {
-    sa_family_t sa_family;
-    char sa_data[14];
-  };
-# 197 "/usr/include/bits/socket.h" 3 4
-struct __attribute__ ((__may_alias__)) sockaddr_storage
-  {
-    sa_family_t ss_family;
-    char __ss_padding[(128 - (sizeof (unsigned short int)) - sizeof (unsigned long int))];
-    unsigned long int __ss_align;
-  };
-
-
-
-enum
-  {
-    MSG_OOB = 0x01,
-
-    MSG_PEEK = 0x02,
-
-    MSG_DONTROUTE = 0x04,
-
-
-
-    MSG_TRYHARD = MSG_DONTROUTE,
-
-
-    MSG_CTRUNC = 0x08,
-
-    MSG_PROXY = 0x10,
-
-    MSG_TRUNC = 0x20,
-
-    MSG_DONTWAIT = 0x40,
-
-    MSG_EOR = 0x80,
-
-    MSG_WAITALL = 0x100,
-
-    MSG_FIN = 0x200,
-
-    MSG_SYN = 0x400,
-
-    MSG_CONFIRM = 0x800,
-
-    MSG_RST = 0x1000,
-
-    MSG_ERRQUEUE = 0x2000,
-
-    MSG_NOSIGNAL = 0x4000,
-
-    MSG_MORE = 0x8000,
-
-    MSG_WAITFORONE = 0x10000,
-
-    MSG_BATCH = 0x40000,
-
-    MSG_SOCK_DEVMEM = 0x2000000,
-
-    MSG_ZEROCOPY = 0x4000000,
-
-    MSG_FASTOPEN = 0x20000000,
-
-
-    MSG_CMSG_CLOEXEC = 0x40000000
-
-
-
-  };
-
-
-
-
-struct msghdr
-  {
-    void *msg_name;
-    socklen_t msg_namelen;
-
-    struct iovec *msg_iov;
-    size_t msg_iovlen;
-
-    void *msg_control;
-    size_t msg_controllen;
-
-
-
-
-    int msg_flags;
-  };
-
-
-struct cmsghdr
-  {
-    size_t cmsg_len;
-
-
-
-
-    int cmsg_level;
-    int cmsg_type;
-
-    __extension__ unsigned char __cmsg_data [];
-
-  };
-# 319 "/usr/include/bits/socket.h" 3 4
-extern struct cmsghdr *__cmsg_nxthdr (struct msghdr *__mhdr,
-          struct cmsghdr *__cmsg) noexcept (true);
-# 366 "/usr/include/bits/socket.h" 3 4
-enum
-  {
-    SCM_RIGHTS = 0x01
-
-
-    , SCM_CREDENTIALS = 0x02
-
-    , SCM_SECURITY = 0x03
-
-    , SCM_PIDFD = 0x04
-
-
-  };
-
-
-
-struct ucred
-{
-  pid_t pid;
-  uid_t uid;
-  gid_t gid;
-};
-
-
-
-
-# 1 "/usr/include/asm/socket.h" 1 3 4
-# 1 "/usr/include/asm-generic/socket.h" 1 3 4
-
-
-
-
-
-# 1 "/usr/include/asm/sockios.h" 1 3 4
-# 1 "/usr/include/asm-generic/sockios.h" 1 3 4
-# 2 "/usr/include/asm/sockios.h" 2 3 4
-# 7 "/usr/include/asm-generic/socket.h" 2 3 4
-# 2 "/usr/include/asm/socket.h" 2 3 4
-# 393 "/usr/include/bits/socket.h" 2 3 4
-
-
-
-
-
-
-struct linger
-  {
-    int l_onoff;
-    int l_linger;
-  };
-# 34 "/usr/include/sys/socket.h" 2 3 4
-
-
-# 1 "/usr/include/bits/types/struct_osockaddr.h" 1 3 4
-
-
-
-
-
-struct osockaddr
-{
-  unsigned short int sa_family;
-  unsigned char sa_data[14];
-};
-# 37 "/usr/include/sys/socket.h" 2 3 4
-
-
-
-
-enum
-{
-  SHUT_RD = 0,
-
-  SHUT_WR,
-
-  SHUT_RDWR
-
-};
-# 90 "/usr/include/sys/socket.h" 3 4
-struct mmsghdr
-  {
-    struct msghdr msg_hdr;
-    unsigned int msg_len;
-
-  };
-
-
-
-
-
-
-extern int socket (int __domain, int __type, int __protocol) noexcept (true);
-
-
-
-
-
-extern int socketpair (int __domain, int __type, int __protocol,
-         int __fds[2]) noexcept (true);
-
-
-extern int bind (int __fd, const struct sockaddr * __addr, socklen_t __len)
-     noexcept (true);
-
-
-extern int getsockname (int __fd, struct sockaddr *__restrict __addr,
-   socklen_t *__restrict __len) noexcept (true);
-# 126 "/usr/include/sys/socket.h" 3 4
-extern int connect (int __fd, const struct sockaddr * __addr, socklen_t __len);
-
-
-
-extern int getpeername (int __fd, struct sockaddr *__restrict __addr,
-   socklen_t *__restrict __len) noexcept (true);
-
-
-
-
-
-
-extern ssize_t send (int __fd, const void *__buf, size_t __n, int __flags);
-
-
-
-
-
-
-extern ssize_t recv (int __fd, void *__buf, size_t __n, int __flags);
-
-
-
-
-
-
-extern ssize_t sendto (int __fd, const void *__buf, size_t __n,
-         int __flags, const struct sockaddr * __addr,
-         socklen_t __addr_len);
-# 163 "/usr/include/sys/socket.h" 3 4
-extern ssize_t recvfrom (int __fd, void *__restrict __buf, size_t __n,
-    int __flags, struct sockaddr *__restrict __addr,
-    socklen_t *__restrict __addr_len);
-# 174 "/usr/include/sys/socket.h" 3 4
-extern ssize_t sendmsg (int __fd, const struct msghdr *__message,
-   int __flags);
-# 195 "/usr/include/sys/socket.h" 3 4
-extern int sendmmsg (int __fd, struct mmsghdr *__vmessages,
-       unsigned int __vlen, int __flags);
-# 216 "/usr/include/sys/socket.h" 3 4
-extern ssize_t recvmsg (int __fd, struct msghdr *__message, int __flags);
-# 235 "/usr/include/sys/socket.h" 3 4
-extern int recvmmsg (int __fd, struct mmsghdr *__vmessages,
-       unsigned int __vlen, int __flags,
-       struct timespec *__tmo);
-# 255 "/usr/include/sys/socket.h" 3 4
-extern int getsockopt (int __fd, int __level, int __optname,
-         void *__restrict __optval,
-         socklen_t *__restrict __optlen) noexcept (true);
-# 277 "/usr/include/sys/socket.h" 3 4
-extern int setsockopt (int __fd, int __level, int __optname,
-         const void *__optval, socklen_t __optlen) noexcept (true);
-# 296 "/usr/include/sys/socket.h" 3 4
-extern int listen (int __fd, int __n) noexcept (true);
-# 306 "/usr/include/sys/socket.h" 3 4
-extern int accept (int __fd, struct sockaddr *__restrict __addr,
-     socklen_t *__restrict __addr_len);
-
-
-
-
-
-
-extern int accept4 (int __fd, struct sockaddr *__restrict __addr,
-      socklen_t *__restrict __addr_len, int __flags);
-# 324 "/usr/include/sys/socket.h" 3 4
-extern int shutdown (int __fd, int __how) noexcept (true);
-
-
-
-
-extern int sockatmark (int __fd) noexcept (true);
-
-
-
-
-
-
-
-extern int isfdtype (int __fd, int __fdtype) noexcept (true);
-# 346 "/usr/include/sys/socket.h" 3 4
-}
-# 24 "/usr/include/netinet/in.h" 2 3 4
-
-
-
-extern "C" {
-
-
-typedef uint32_t in_addr_t;
-struct in_addr
-  {
-    in_addr_t s_addr;
-  };
-
-
-# 1 "/usr/include/bits/in.h" 1 3 4
-# 145 "/usr/include/bits/in.h" 3 4
-struct ip_opts
-  {
-    struct in_addr ip_dst;
-    char ip_opts[40];
-  };
-
-
-struct in_pktinfo
-  {
-    int ipi_ifindex;
-    struct in_addr ipi_spec_dst;
-    struct in_addr ipi_addr;
-  };
-# 38 "/usr/include/netinet/in.h" 2 3 4
-
-
-enum
-  {
-    IPPROTO_IP = 0,
-
-    IPPROTO_ICMP = 1,
-
-    IPPROTO_IGMP = 2,
-
-    IPPROTO_IPIP = 4,
-
-    IPPROTO_TCP = 6,
-
-    IPPROTO_EGP = 8,
-
-    IPPROTO_PUP = 12,
-
-    IPPROTO_UDP = 17,
-
-    IPPROTO_IDP = 22,
-
-    IPPROTO_TP = 29,
-
-    IPPROTO_DCCP = 33,
-
-    IPPROTO_IPV6 = 41,
-
-    IPPROTO_RSVP = 46,
-
-    IPPROTO_GRE = 47,
-
-    IPPROTO_ESP = 50,
-
-    IPPROTO_AH = 51,
-
-    IPPROTO_MTP = 92,
-
-    IPPROTO_BEETPH = 94,
-
-    IPPROTO_ENCAP = 98,
-
-    IPPROTO_PIM = 103,
-
-    IPPROTO_COMP = 108,
-
-    IPPROTO_L2TP = 115,
-
-    IPPROTO_SCTP = 132,
-
-    IPPROTO_UDPLITE = 136,
-
-    IPPROTO_MPLS = 137,
-
-    IPPROTO_ETHERNET = 143,
-
-    IPPROTO_RAW = 255,
-
-    IPPROTO_SMC = 256,
-
-    IPPROTO_MPTCP = 262,
-
-    IPPROTO_MAX
-  };
-
-
-
-
-
-enum
-  {
-    IPPROTO_HOPOPTS = 0,
-
-    IPPROTO_ROUTING = 43,
-
-    IPPROTO_FRAGMENT = 44,
-
-    IPPROTO_ICMPV6 = 58,
-
-    IPPROTO_NONE = 59,
-
-    IPPROTO_DSTOPTS = 60,
-
-    IPPROTO_MH = 135
-
-  };
-
-
-
-typedef uint16_t in_port_t;
-
-
-enum
-  {
-    IPPORT_ECHO = 7,
-    IPPORT_DISCARD = 9,
-    IPPORT_SYSTAT = 11,
-    IPPORT_DAYTIME = 13,
-    IPPORT_NETSTAT = 15,
-    IPPORT_FTP = 21,
-    IPPORT_TELNET = 23,
-    IPPORT_SMTP = 25,
-    IPPORT_TIMESERVER = 37,
-    IPPORT_NAMESERVER = 42,
-    IPPORT_WHOIS = 43,
-    IPPORT_MTP = 57,
-
-    IPPORT_TFTP = 69,
-    IPPORT_RJE = 77,
-    IPPORT_FINGER = 79,
-    IPPORT_TTYLINK = 87,
-    IPPORT_SUPDUP = 95,
-
-
-    IPPORT_EXECSERVER = 512,
-    IPPORT_LOGINSERVER = 513,
-    IPPORT_CMDSERVER = 514,
-    IPPORT_EFSSERVER = 520,
-
-
-    IPPORT_BIFFUDP = 512,
-    IPPORT_WHOSERVER = 513,
-    IPPORT_ROUTESERVER = 520,
-
-
-    IPPORT_RESERVED = 1024,
-
-
-    IPPORT_USERRESERVED = 5000
-  };
-# 223 "/usr/include/netinet/in.h" 3 4
-struct in6_addr
-  {
-    union
-      {
- uint8_t __u6_addr8[16];
- uint16_t __u6_addr16[8];
- uint32_t __u6_addr32[4];
-      } __in6_u;
-
-
-
-
-
-  };
-
-
-extern const struct in6_addr in6addr_any;
-extern const struct in6_addr in6addr_loopback;
-# 249 "/usr/include/netinet/in.h" 3 4
-struct __attribute__ ((__may_alias__)) sockaddr_in
-  {
-    sa_family_t sin_family;
-    in_port_t sin_port;
-    struct in_addr sin_addr;
-
-
-    unsigned char sin_zero[sizeof (struct sockaddr)
-      - (sizeof (unsigned short int))
-      - sizeof (in_port_t)
-      - sizeof (struct in_addr)];
-  };
-
-
-
-
-
-struct __attribute__ ((__may_alias__)) sockaddr_in6
-  {
-    sa_family_t sin6_family;
-    in_port_t sin6_port;
-    uint32_t sin6_flowinfo;
-    struct in6_addr sin6_addr;
-    uint32_t sin6_scope_id;
-  };
-
-
-
-
-struct ip_mreq
-  {
-
-    struct in_addr imr_multiaddr;
-
-
-    struct in_addr imr_interface;
-  };
-
-
-struct ip_mreqn
-  {
-
-    struct in_addr imr_multiaddr;
-
-
-    struct in_addr imr_address;
-
-
-    int imr_ifindex;
-  };
-
-struct ip_mreq_source
-  {
-
-    struct in_addr imr_multiaddr;
-
-
-    struct in_addr imr_interface;
-
-
-    struct in_addr imr_sourceaddr;
-  };
-
-
-
-
-struct ipv6_mreq
-  {
-
-    struct in6_addr ipv6mr_multiaddr;
-
-
-    unsigned int ipv6mr_interface;
-  };
-
-
-
-
-struct group_req
-  {
-
-    uint32_t gr_interface;
-
-
-    struct sockaddr_storage gr_group;
-  };
-
-struct group_source_req
-  {
-
-    uint32_t gsr_interface;
-
-
-    struct sockaddr_storage gsr_group;
-
-
-    struct sockaddr_storage gsr_source;
-  };
-
-
-
-struct ip_msfilter
-  {
-
-    struct in_addr imsf_multiaddr;
-
-
-    struct in_addr imsf_interface;
-
-
-    uint32_t imsf_fmode;
-
-
-    uint32_t imsf_numsrc;
-
-    struct in_addr imsf_slist[1];
-  };
-
-
-
-
-
-struct group_filter
-  {
-
-    uint32_t gf_interface;
-
-
-    struct sockaddr_storage gf_group;
-
-
-    uint32_t gf_fmode;
-
-
-    uint32_t gf_numsrc;
-
-    struct sockaddr_storage gf_slist[1];
-};
-# 401 "/usr/include/netinet/in.h" 3 4
-extern uint32_t ntohl (uint32_t __netlong) noexcept (true) __attribute__ ((__const__));
-extern uint16_t ntohs (uint16_t __netshort)
-     noexcept (true) __attribute__ ((__const__));
-extern uint32_t htonl (uint32_t __hostlong)
-     noexcept (true) __attribute__ ((__const__));
-extern uint16_t htons (uint16_t __hostshort)
-     noexcept (true) __attribute__ ((__const__));
-
-
-
-
-# 1 "/usr/include/bits/byteswap.h" 1 3 4
-# 413 "/usr/include/netinet/in.h" 2 3 4
-# 1 "/usr/include/bits/uintn-identity.h" 1 3 4
-# 414 "/usr/include/netinet/in.h" 2 3 4
-# 529 "/usr/include/netinet/in.h" 3 4
-extern int bindresvport (int __sockfd, struct sockaddr_in *__sock_in) noexcept (true);
-
-
-extern int bindresvport6 (int __sockfd, struct sockaddr_in6 *__sock_in)
-     noexcept (true);
-# 559 "/usr/include/netinet/in.h" 3 4
-struct cmsghdr;
-
-
-
-struct in6_pktinfo
-  {
-    struct in6_addr ipi6_addr;
-    unsigned int ipi6_ifindex;
-  };
-
-
-struct ip6_mtuinfo
-  {
-    struct sockaddr_in6 ip6m_addr;
-    uint32_t ip6m_mtu;
-  };
-
-
-
-extern int inet6_option_space (int __nbytes)
-     noexcept (true) __attribute__ ((__deprecated__));
-extern int inet6_option_init (void *__bp, struct cmsghdr **__cmsgp,
-         int __type) noexcept (true) __attribute__ ((__deprecated__));
-extern int inet6_option_append (struct cmsghdr *__cmsg,
-    const uint8_t *__typep, int __multx,
-    int __plusy) noexcept (true) __attribute__ ((__deprecated__));
-extern uint8_t *inet6_option_alloc (struct cmsghdr *__cmsg, int __datalen,
-        int __multx, int __plusy)
-     noexcept (true) __attribute__ ((__deprecated__));
-extern int inet6_option_next (const struct cmsghdr *__cmsg,
-         uint8_t **__tptrp)
-     noexcept (true) __attribute__ ((__deprecated__));
-extern int inet6_option_find (const struct cmsghdr *__cmsg,
-         uint8_t **__tptrp, int __type)
-     noexcept (true) __attribute__ ((__deprecated__));
-
-
-
-extern int inet6_opt_init (void *__extbuf, socklen_t __extlen) noexcept (true);
-extern int inet6_opt_append (void *__extbuf, socklen_t __extlen, int __offset,
-        uint8_t __type, socklen_t __len, uint8_t __align,
-        void **__databufp) noexcept (true);
-extern int inet6_opt_finish (void *__extbuf, socklen_t __extlen, int __offset)
-     noexcept (true);
-extern int inet6_opt_set_val (void *__databuf, int __offset, void *__val,
-         socklen_t __vallen) noexcept (true);
-extern int inet6_opt_next (void *__extbuf, socklen_t __extlen, int __offset,
-      uint8_t *__typep, socklen_t *__lenp,
-      void **__databufp) noexcept (true);
-extern int inet6_opt_find (void *__extbuf, socklen_t __extlen, int __offset,
-      uint8_t __type, socklen_t *__lenp,
-      void **__databufp) noexcept (true);
-extern int inet6_opt_get_val (void *__databuf, int __offset, void *__val,
-         socklen_t __vallen) noexcept (true);
-
-
-
-extern socklen_t inet6_rth_space (int __type, int __segments) noexcept (true);
-extern void *inet6_rth_init (void *__bp, socklen_t __bp_len, int __type,
-        int __segments) noexcept (true);
-extern int inet6_rth_add (void *__bp, const struct in6_addr *__addr) noexcept (true);
-extern int inet6_rth_reverse (const void *__in, void *__out) noexcept (true);
-extern int inet6_rth_segments (const void *__bp) noexcept (true);
-extern struct in6_addr *inet6_rth_getaddr (const void *__bp, int __index)
-     noexcept (true);
-
-
-
-
-
-extern int getipv4sourcefilter (int __s, struct in_addr __interface_addr,
-    struct in_addr __group, uint32_t *__fmode,
-    uint32_t *__numsrc, struct in_addr *__slist)
-     noexcept (true);
-
-
-extern int setipv4sourcefilter (int __s, struct in_addr __interface_addr,
-    struct in_addr __group, uint32_t __fmode,
-    uint32_t __numsrc,
-    const struct in_addr *__slist)
-     noexcept (true);
-
-
-
-extern int getsourcefilter (int __s, uint32_t __interface_addr,
-       const struct sockaddr *__group,
-       socklen_t __grouplen, uint32_t *__fmode,
-       uint32_t *__numsrc,
-       struct sockaddr_storage *__slist) noexcept (true);
-
-
-extern int setsourcefilter (int __s, uint32_t __interface_addr,
-       const struct sockaddr *__group,
-       socklen_t __grouplen, uint32_t __fmode,
-       uint32_t __numsrc,
-       const struct sockaddr_storage *__slist) noexcept (true);
-
-
-}
-# 23 "/usr/include/arpa/inet.h" 2 3 4
-
-
-
-
-
-
-
+# 30 "/usr/include/arpa/inet.h" 3 4
 extern "C" {
 
 
@@ -56761,23 +57736,28 @@ extern char *inet_nsap_ntoa (int __len, const unsigned char *__cp,
         char *__buf) noexcept (true);
 
 
+
+
+
+
+
 }
-# 6 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 2
+# 9 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 2
 
 
-# 7 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
+# 10 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
 ProxyServer::ProxyServer(int listenPort, const std::string& targetHost, int targetPort)
     : listenPort_(listenPort), targetHost_(targetHost), targetPort_(targetPort) {}
 
 void ProxyServer::start() {
     int server_fd = socket(
-# 11 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
+# 14 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
                           2
-# 11 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
+# 14 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
                                  , 
-# 11 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
+# 14 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
                                    SOCK_STREAM
-# 11 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
+# 14 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
                                               , 0);
     if (server_fd < 0) {
         perror("Socket failed");
@@ -56786,14 +57766,14 @@ void ProxyServer::start() {
 
     sockaddr_in addr {};
     addr.sin_family = 
-# 18 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
+# 21 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
                      2
-# 18 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
+# 21 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
                             ;
     addr.sin_addr.s_addr = 
-# 19 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
+# 22 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
                           ((in_addr_t) 0x00000000)
-# 19 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
+# 22 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
                                     ;
     addr.sin_port = htons(listenPort_);
 
@@ -56823,10 +57803,110 @@ void ProxyServer::start() {
 }
 
 void ProxyServer::handleClient(int clientSocket) {
-    char buffer[4096];
-    ssize_t bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0);
-    if (bytesRead > 0) {
-        send(clientSocket, buffer, bytesRead, 0);
+    std::cout << "[*] New client connected. Preparing to connect to target server..." << std::endl;
+
+
+    int serverSocket = socket(
+# 54 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
+                             2
+# 54 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
+                                    , 
+# 54 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
+                                      SOCK_STREAM
+# 54 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
+                                                 , 0);
+    if (serverSocket < 0) {
+        perror("[!] Socket to target failed");
+        close(clientSocket);
+        return;
     }
+    std::cout << "[+] Created socket to target server." << std::endl;
+
+
+    struct hostent* target = gethostbyname(targetHost_.c_str());
+    if (target == nullptr) {
+        std::cerr << "[!] Failed to resolve hostname: " << targetHost_ << std::endl;
+        close(clientSocket);
+        close(serverSocket);
+        return;
+    }
+    std::cout << "[+] Resolved hostname " << targetHost_ << " to IP: "
+              << inet_ntoa(*(struct in_addr*)target->
+# 71 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
+                                                    h_addr_list[0]
+# 71 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
+                                                          ) << std::endl;
+
+
+    sockaddr_in serverAddr {};
+    serverAddr.sin_family = 
+# 75 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
+                           2
+# 75 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
+                                  ;
+    serverAddr.sin_port = htons(targetPort_);
+    memcpy(&serverAddr.sin_addr.s_addr, target->
+# 77 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
+                                               h_addr_list[0]
+# 77 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
+                                                     , target->h_length);
+
+
+    if (connect(serverSocket, (sockaddr*)&serverAddr, sizeof(serverAddr)) < 0) {
+        perror("[!] Connect to target failed");
+        close(clientSocket);
+        close(serverSocket);
+        return;
+    }
+    std::cout << "[+] Connection established: Client ↔ Proxy ↔ "
+              << targetHost_ << ":" << targetPort_ << std::endl;
+
+
+    std::cout << "[*] Starting data forwarding threads..." << std::endl;
+
+    std::thread t1(&ProxyServer::forwardData, this, clientSocket, serverSocket, "Client → Server");
+    std::thread t2(&ProxyServer::forwardData, this, serverSocket, clientSocket, "Server → Client");
+
+    t1.join();
+    t2.join();
+
+    std::cout << "[*] Forwarding threads finished. Closing sockets..." << std::endl;
     close(clientSocket);
+    close(serverSocket);
+    std::cout << "[-] Connection closed." << std::endl;
+}
+
+
+void ProxyServer::forwardData(int sourceSocket, int destSocket, const std::string& direction) {
+    char buffer[4096];
+    ssize_t bytesRead;
+
+    while ((bytesRead = recv(sourceSocket, buffer, sizeof(buffer), 0)) > 0) {
+        std::string data(buffer, bytesRead);
+
+        if (direction == "Client → Server") {
+            std::cout << "[Intercept] Original Client Request:\n" << data << std::endl;
+
+
+            size_t hostPos = data.find("Host:");
+            if (hostPos != std::string::npos) {
+                size_t endOfLine = data.find("\r\n", hostPos);
+                if (endOfLine != std::string::npos) {
+                    std::string originalHostLine = data.substr(hostPos, endOfLine - hostPos);
+                    std::string newHostLine = "Host: " + targetHost_;
+                    data.replace(hostPos, originalHostLine.length(), newHostLine);
+                    std::cout << "[Modify] Replaced Host Header → " << newHostLine << std::endl;
+                }
+            }
+        }
+
+        send(destSocket, data.c_str(), data.length(), 0);
+        std::cout << "[Data] " << direction << " - " << data.length() << " bytes" << std::endl;
+    }
+
+    if (bytesRead == 0) {
+        std::cout << "[*] " << direction << " connection closed by peer." << std::endl;
+    } else if (bytesRead < 0) {
+        perror(("[!] recv() failed in " + direction).c_str());
+    }
 }

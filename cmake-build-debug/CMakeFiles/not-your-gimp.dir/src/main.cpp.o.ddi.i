@@ -25938,6 +25938,12 @@ __extension__ extern long long int llabs (long long int __x)
 
 
 
+extern unsigned int uabs (int __x) noexcept (true) __attribute__ ((__const__)) ;
+extern unsigned long int ulabs (long int __x) noexcept (true) __attribute__ ((__const__)) ;
+__extension__ extern unsigned long long int ullabs (long long int __x)
+     noexcept (true) __attribute__ ((__const__)) ;
+
+
 
 
 
@@ -25950,7 +25956,7 @@ extern ldiv_t ldiv (long int __numer, long int __denom)
 __extension__ extern lldiv_t lldiv (long long int __numer,
         long long int __denom)
      noexcept (true) __attribute__ ((__const__)) ;
-# 1012 "/usr/include/stdlib.h" 3 4
+# 1018 "/usr/include/stdlib.h" 3 4
 extern char *ecvt (double __value, int __ndigit, int *__restrict __decpt,
      int *__restrict __sign) noexcept (true) __attribute__ ((__nonnull__ (3, 4))) ;
 
@@ -26028,7 +26034,7 @@ extern size_t wcstombs (char *__restrict __s,
 
 
 extern int rpmatch (const char *__response) noexcept (true) __attribute__ ((__nonnull__ (1))) ;
-# 1099 "/usr/include/stdlib.h" 3 4
+# 1105 "/usr/include/stdlib.h" 3 4
 extern int getsubopt (char **__restrict __optionp,
         char *const *__restrict __tokens,
         char **__restrict __valuep)
@@ -26077,10 +26083,10 @@ extern int getpt (void);
 
 extern int getloadavg (double __loadavg[], int __nelem)
      noexcept (true) __attribute__ ((__nonnull__ (1)));
-# 1155 "/usr/include/stdlib.h" 3 4
+# 1161 "/usr/include/stdlib.h" 3 4
 # 1 "/usr/include/bits/stdlib-float.h" 1 3 4
-# 1156 "/usr/include/stdlib.h" 2 3 4
-# 1167 "/usr/include/stdlib.h" 3 4
+# 1162 "/usr/include/stdlib.h" 2 3 4
+# 1173 "/usr/include/stdlib.h" 3 4
 }
 # 84 "/usr/include/c++/15.1.1/cstdlib" 2 3
 
@@ -26308,7 +26314,10 @@ typedef struct _G_fpos64_t
 
 
 # 1 "/usr/include/bits/types/struct_FILE.h" 1 3 4
-# 36 "/usr/include/bits/types/struct_FILE.h" 3 4
+# 35 "/usr/include/bits/types/struct_FILE.h" 3 4
+# 1 "/usr/include/bits/wordsize.h" 1 3 4
+# 36 "/usr/include/bits/types/struct_FILE.h" 2 3 4
+
 struct _IO_FILE;
 struct _IO_marker;
 struct _IO_codecvt;
@@ -26374,7 +26383,14 @@ struct _IO_FILE
   struct _IO_FILE **_prevchain;
   int _mode;
 
-  char _unused2[15 * sizeof (int) - 5 * sizeof (void *)];
+  int _unused3;
+
+  __uint64_t _total_written;
+
+
+
+
+  char _unused2[12 * sizeof (int) - 5 * sizeof (void *)];
 };
 # 45 "/usr/include/stdio.h" 2 3 4
 
@@ -26445,7 +26461,7 @@ extern int rename (const char *__old, const char *__new) noexcept (true);
 
 extern int renameat (int __oldfd, const char *__old, int __newfd,
        const char *__new) noexcept (true);
-# 176 "/usr/include/stdio.h" 3 4
+# 179 "/usr/include/stdio.h" 3 4
 extern int renameat2 (int __oldfd, const char *__old, int __newfd,
         const char *__new, unsigned int __flags) noexcept (true);
 
@@ -26455,10 +26471,10 @@ extern int renameat2 (int __oldfd, const char *__old, int __newfd,
 
 
 extern int fclose (FILE *__stream) __attribute__ ((__nonnull__ (1)));
-# 194 "/usr/include/stdio.h" 3 4
+# 197 "/usr/include/stdio.h" 3 4
 extern FILE *tmpfile (void)
   __attribute__ ((__malloc__)) __attribute__ ((__malloc__ (fclose, 1))) ;
-# 206 "/usr/include/stdio.h" 3 4
+# 209 "/usr/include/stdio.h" 3 4
 extern FILE *tmpfile64 (void)
    __attribute__ ((__malloc__)) __attribute__ ((__malloc__ (fclose, 1))) ;
 
@@ -26470,7 +26486,7 @@ extern char *tmpnam (char[20]) noexcept (true) ;
 
 
 extern char *tmpnam_r (char __s[20]) noexcept (true) ;
-# 228 "/usr/include/stdio.h" 3 4
+# 231 "/usr/include/stdio.h" 3 4
 extern char *tempnam (const char *__dir, const char *__pfx)
    noexcept (true) __attribute__ ((__malloc__)) __attribute__ ((__malloc__ (__builtin_free, 1)));
 
@@ -26480,11 +26496,11 @@ extern char *tempnam (const char *__dir, const char *__pfx)
 
 
 extern int fflush (FILE *__stream);
-# 245 "/usr/include/stdio.h" 3 4
+# 248 "/usr/include/stdio.h" 3 4
 extern int fflush_unlocked (FILE *__stream);
-# 255 "/usr/include/stdio.h" 3 4
+# 258 "/usr/include/stdio.h" 3 4
 extern int fcloseall (void);
-# 264 "/usr/include/stdio.h" 3 4
+# 267 "/usr/include/stdio.h" 3 4
 extern FILE *fopen (const char *__restrict __filename,
       const char *__restrict __modes)
   __attribute__ ((__malloc__)) __attribute__ ((__malloc__ (fclose, 1))) ;
@@ -26495,7 +26511,7 @@ extern FILE *fopen (const char *__restrict __filename,
 extern FILE *freopen (const char *__restrict __filename,
         const char *__restrict __modes,
         FILE *__restrict __stream) __attribute__ ((__nonnull__ (3)));
-# 289 "/usr/include/stdio.h" 3 4
+# 292 "/usr/include/stdio.h" 3 4
 extern FILE *fopen64 (const char *__restrict __filename,
         const char *__restrict __modes)
   __attribute__ ((__malloc__)) __attribute__ ((__malloc__ (fclose, 1))) ;
@@ -26639,7 +26655,7 @@ extern int scanf (const char *__restrict __format, ...) ;
 
 extern int sscanf (const char *__restrict __s,
      const char *__restrict __format, ...) noexcept (true);
-# 442 "/usr/include/stdio.h" 3 4
+# 445 "/usr/include/stdio.h" 3 4
 extern int fscanf (FILE *__restrict __stream, const char *__restrict __format, ...) __asm__ ("" "__isoc23_fscanf")
 
                                 __attribute__ ((__nonnull__ (1)));
@@ -26648,7 +26664,7 @@ extern int scanf (const char *__restrict __format, ...) __asm__ ("" "__isoc23_sc
 extern int sscanf (const char *__restrict __s, const char *__restrict __format, ...) noexcept (true) __asm__ ("" "__isoc23_sscanf")
 
                       ;
-# 490 "/usr/include/stdio.h" 3 4
+# 493 "/usr/include/stdio.h" 3 4
 extern int vfscanf (FILE *__restrict __s, const char *__restrict __format,
       __gnuc_va_list __arg)
      __attribute__ ((__format__ (__scanf__, 2, 0))) __attribute__ ((__nonnull__ (1)));
@@ -26683,7 +26699,7 @@ extern int vsscanf (const char *__restrict __s, const char *__restrict __format,
 
 
      __attribute__ ((__format__ (__scanf__, 2, 0)));
-# 575 "/usr/include/stdio.h" 3 4
+# 578 "/usr/include/stdio.h" 3 4
 extern int fgetc (FILE *__stream) __attribute__ ((__nonnull__ (1)));
 extern int getc (FILE *__stream) __attribute__ ((__nonnull__ (1)));
 
@@ -26700,9 +26716,15 @@ extern int getchar (void);
 
 extern int getc_unlocked (FILE *__stream) __attribute__ ((__nonnull__ (1)));
 extern int getchar_unlocked (void);
-# 600 "/usr/include/stdio.h" 3 4
+# 603 "/usr/include/stdio.h" 3 4
 extern int fgetc_unlocked (FILE *__stream) __attribute__ ((__nonnull__ (1)));
-# 611 "/usr/include/stdio.h" 3 4
+
+
+
+
+
+
+
 extern int fputc (int __c, FILE *__stream) __attribute__ ((__nonnull__ (2)));
 extern int putc (int __c, FILE *__stream) __attribute__ ((__nonnull__ (2)));
 
@@ -31742,6 +31764,7 @@ private:
     int targetPort_;
 
     void handleClient(int clientSocket);
+    void forwardData(int fromSocket, int toSocket, const std::string& direction);
 };
 # 2 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/main.cpp" 2
 

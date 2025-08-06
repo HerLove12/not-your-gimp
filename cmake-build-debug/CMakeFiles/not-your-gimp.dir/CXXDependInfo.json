@@ -5,6 +5,7 @@
 	"compiler-simulate-id" : "",
 	"config" : "Debug",
 	"cxx-modules" : {},
+	"database-info" : null,
 	"dir-cur-bld" : "/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug",
 	"dir-cur-src" : "/home/herlove/Documents/scripts/c-projects/not-your-gimp",
 	"dir-top-bld" : "/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug",
@@ -17,5 +18,18 @@
 	],
 	"language" : "CXX",
 	"linked-target-dirs" : [],
-	"module-dir" : "/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/CMakeFiles/not-your-gimp.dir"
+	"module-dir" : "/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/CMakeFiles/not-your-gimp.dir",
+	"sources" : 
+	{
+		"CMakeFiles/not-your-gimp.dir/src/ProxyServer.cpp.o" : 
+		{
+			"language" : "CXX",
+			"source" : "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
+		},
+		"CMakeFiles/not-your-gimp.dir/src/main.cpp.o" : 
+		{
+			"language" : "CXX",
+			"source" : "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/main.cpp"
+		}
+	}
 }

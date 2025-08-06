@@ -110,9 +110,10 @@ CMakeFiles/not-your-gimp.dir/src/ProxyServer.cpp.o.ddi: \
  /usr/include/c++/15.1.1/bits/uses_allocator.h \
  /usr/include/c++/15.1.1/bits/uses_allocator_args.h \
  /usr/include/c++/15.1.1/tuple /usr/include/c++/15.1.1/bits/ranges_util.h \
- /usr/include/c++/15.1.1/iostream /usr/include/c++/15.1.1/ostream \
- /usr/include/c++/15.1.1/bits/ostream.h /usr/include/c++/15.1.1/ios \
- /usr/include/c++/15.1.1/exception \
+ /usr/include/c++/15.1.1/cstring /usr/include/string.h \
+ /usr/include/strings.h /usr/include/c++/15.1.1/iostream \
+ /usr/include/c++/15.1.1/ostream /usr/include/c++/15.1.1/bits/ostream.h \
+ /usr/include/c++/15.1.1/ios /usr/include/c++/15.1.1/exception \
  /usr/include/c++/15.1.1/bits/exception_ptr.h \
  /usr/include/c++/15.1.1/bits/cxxabi_init_exception.h \
  /usr/include/c++/15.1.1/typeinfo \
@@ -152,15 +153,25 @@ CMakeFiles/not-your-gimp.dir/src/ProxyServer.cpp.o.ddi: \
  /usr/include/c++/15.1.1/bits/locale_facets.tcc \
  /usr/include/c++/15.1.1/bits/basic_ios.tcc \
  /usr/include/c++/15.1.1/bits/ostream.tcc /usr/include/c++/15.1.1/istream \
- /usr/include/c++/15.1.1/bits/istream.tcc /usr/include/c++/15.1.1/thread \
- /usr/include/c++/15.1.1/stop_token /usr/include/c++/15.1.1/atomic \
+ /usr/include/c++/15.1.1/bits/istream.tcc /usr/include/netdb.h \
+ /usr/include/netinet/in.h /usr/include/bits/stdint-uintn.h \
+ /usr/include/sys/socket.h /usr/include/bits/types/struct_iovec.h \
+ /usr/include/bits/socket.h /usr/include/bits/socket_type.h \
+ /usr/include/bits/sockaddr.h /usr/include/asm/socket.h \
+ /usr/include/asm-generic/socket.h /usr/include/asm/sockios.h \
+ /usr/include/asm-generic/sockios.h \
+ /usr/include/bits/types/struct_osockaddr.h /usr/include/bits/in.h \
+ /usr/include/rpc/netdb.h /usr/include/bits/types/sigevent_t.h \
+ /usr/include/bits/types/__sigval_t.h /usr/include/bits/netdb.h \
+ /usr/include/c++/15.1.1/thread /usr/include/c++/15.1.1/stop_token \
+ /usr/include/c++/15.1.1/atomic \
  /usr/include/c++/15.1.1/bits/atomic_base.h \
  /usr/include/c++/15.1.1/bits/atomic_lockfree_defines.h \
  /usr/include/c++/15.1.1/bits/atomic_wait.h \
  /usr/include/c++/15.1.1/cstdint \
  /usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/include/stdint.h \
- /usr/include/stdint.h /usr/include/bits/stdint-uintn.h \
- /usr/include/bits/stdint-least.h /usr/include/c++/15.1.1/climits \
+ /usr/include/stdint.h /usr/include/bits/stdint-least.h \
+ /usr/include/c++/15.1.1/climits \
  /usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/include/limits.h \
  /usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/include/syslimits.h \
  /usr/include/limits.h /usr/include/bits/posix1_lim.h \
@@ -184,10 +195,4 @@ CMakeFiles/not-your-gimp.dir/src/ProxyServer.cpp.o.ddi: \
  /usr/include/c++/15.1.1/bits/atomic_timed_wait.h \
  /usr/include/c++/15.1.1/bits/this_thread_sleep.h /usr/include/sys/time.h \
  /usr/include/semaphore.h /usr/include/bits/semaphore.h \
- /usr/include/arpa/inet.h /usr/include/netinet/in.h \
- /usr/include/sys/socket.h /usr/include/bits/types/struct_iovec.h \
- /usr/include/bits/socket.h /usr/include/bits/socket_type.h \
- /usr/include/bits/sockaddr.h /usr/include/asm/socket.h \
- /usr/include/asm-generic/socket.h /usr/include/asm/sockios.h \
- /usr/include/asm-generic/sockios.h \
- /usr/include/bits/types/struct_osockaddr.h /usr/include/bits/in.h
+ /usr/include/arpa/inet.h

@@ -21,4 +21,5 @@ private:
     int targetPort_;
 
     void handleClient(int clientSocket);
+    void forwardData(int fromSocket, int toSocket, const std::string& direction);
 };
