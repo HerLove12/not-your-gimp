@@ -6,9 +6,19 @@
 #include <thread>
 #include <unistd.h> // system commands close() sockets
 #include <arpa/inet.h> // network functions like socket(), bind(), listen(), accept()
+#include <fstream>
+
+//std::ofstream logFile("proxy.log", std::ios::app); MOVED TO CONSTRUCTOR
+
 
 ProxyServer::ProxyServer(int listenPort, const std::string& targetHost, int targetPort)
-    : listenPort_(listenPort), targetHost_(targetHost), targetPort_(targetPort) {}
+    : listenPort_(listenPort), targetHost_(targetHost), targetPort_(targetPort), logFile("proxy.log", std::ios::app)
+{
+    if (!logFile.is_open())
+    {
+        std::cerr << "[-] Failed to open log file!" << std::endl;
+    }
+}
 
 void ProxyServer::start() {
     //create socket
@@ -61,34 +71,28 @@ void ProxyServer::start() {
 void ProxyServer::handleClient(int clientSocket) {
     std::cout << "[*] New client connected. Reading request...\n";
 
-    // Step 1: Read HTTP Request Header
+    // Step 1: Read initial data from client
     std::string requestData;
     char buffer[4096];
-    ssize_t bytesRead;
+    ssize_t bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0);
 
-    while ((bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0)) > 0) {
-        requestData.append(buffer, bytesRead);
-        if (requestData.find("\r\n\r\n") != std::string::npos) {
-            break;  // End of headers
-        }
-    }
-
-    if (requestData.empty()) {
+    if (bytesRead <= 0) {
         std::cerr << "[-] Failed to read request from client.\n";
         close(clientSocket);
         return;
     }
 
-    std::cout << "[Intercept] Original Client Request:\n" << requestData << "\n";
+    requestData.append(buffer, bytesRead);
+
+    //std::cout << "[Intercept] Original Client Request:\n" << requestData << "\n";
 
     // Step 2: Extract Host Header
     std::string host;
     size_t hostPos = requestData.find("Host:");
     if (hostPos != std::string::npos) {
-        size_t hostStart = hostPos + 5;  // Skip "Host:"
+        size_t hostStart = hostPos + 5;
         size_t hostEnd = requestData.find("\r\n", hostStart);
         host = requestData.substr(hostStart, hostEnd - hostStart);
-        // Trim spaces
         host.erase(0, host.find_first_not_of(" \t"));
         host.erase(host.find_last_not_of(" \t") + 1);
     } else {
@@ -107,7 +111,8 @@ void ProxyServer::handleClient(int clientSocket) {
         return;
     }
 
-    std::cout << "[+] Resolved " << host << " to IP: " << inet_ntoa(*(struct in_addr*)target->h_addr) << "\n";
+    std::cout << "[+] Resolved " << host << " to IP: "
+              << inet_ntoa(*(struct in_addr*)target->h_addr) << "\n";
 
     // Step 4: Connect to Target Server
     int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
@@ -119,7 +124,7 @@ void ProxyServer::handleClient(int clientSocket) {
 
     sockaddr_in serverAddr {};
     serverAddr.sin_family = AF_INET;
-    serverAddr.sin_port = htons(80);  // Assuming HTTP only
+    serverAddr.sin_port = htons(80);
     memcpy(&serverAddr.sin_addr.s_addr, target->h_addr, target->h_length);
 
     if (connect(serverSocket, (sockaddr*)&serverAddr, sizeof(serverAddr)) < 0) {
@@ -131,7 +136,9 @@ void ProxyServer::handleClient(int clientSocket) {
 
     std::cout << "[+] Connection established: Client ↔ Proxy ↔ " << host << "\n";
 
-    // Step 5: Forward the request to the real server
+    // Step 5: Log and forward the first chunk immediately
+    logFile << "[Client Request]\n" << requestData << "\n---\n";
+    logFile.flush(); // ensure it appears in proxy.log
     send(serverSocket, requestData.c_str(), requestData.length(), 0);
 
     // Step 6: Start Bi-Directional Data Forwarding
@@ -146,8 +153,6 @@ void ProxyServer::handleClient(int clientSocket) {
     std::cout << "[-] Connection closed.\n";
 }
 
-
-
 void ProxyServer::forwardData(int sourceSocket, int destSocket, const std::string& direction) {
     char buffer[4096];
     ssize_t bytesRead;
@@ -155,20 +160,17 @@ void ProxyServer::forwardData(int sourceSocket, int destSocket, const std::strin
     while ((bytesRead = recv(sourceSocket, buffer, sizeof(buffer), 0)) > 0) {
         std::string data(buffer, bytesRead);
 
-        if (direction == "Client → Server") {
-            std::cout << "[Intercept] Original Client Request:\n" << data << std::endl;
-
-            // Find and replace Host header
-            size_t hostPos = data.find("Host:");
-            if (hostPos != std::string::npos) {
-                size_t endOfLine = data.find("\r\n", hostPos);
-                if (endOfLine != std::string::npos) {
-                    std::string originalHostLine = data.substr(hostPos, endOfLine - hostPos);
-                    std::string newHostLine = "Host: " + targetHost_;
-                    data.replace(hostPos, originalHostLine.length(), newHostLine);
-                    std::cout << "[Modify] Replaced Host Header → " << newHostLine << std::endl;
-                }
+        if (direction == "Server → Client") {
+            // Inject banner
+            size_t pos = data.find("</body>");
+            if (pos != std::string::npos) {
+                data.insert(pos, "<h1 style='color:red;'>[GIMP proxy injection worked]</h1>");
+                std::cout << "[Modify] Injected banner into response.\n";
             }
+
+            // Log server response
+            logFile << "[Server Response]\n" << data << "\n---\n";
+            logFile.flush();
         }
 
         send(destSocket, data.c_str(), data.length(), 0);
@@ -181,6 +183,8 @@ void ProxyServer::forwardData(int sourceSocket, int destSocket, const std::strin
         perror(("[!] recv() failed in " + direction).c_str());
     }
 }
+
+
 
 
 
