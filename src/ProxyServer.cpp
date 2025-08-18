@@ -11,6 +11,7 @@ ProxyServer::ProxyServer(int listenPort, const std::string& targetHost, int targ
     : listenPort_(listenPort), targetHost_(targetHost), targetPort_(targetPort) {}
 
 void ProxyServer::start() {
+    //create socket
     int server_fd = socket(AF_INET, SOCK_STREAM, 0);
     if (server_fd < 0) {
         perror("Socket failed");
@@ -22,12 +23,22 @@ void ProxyServer::start() {
     addr.sin_addr.s_addr = INADDR_ANY; // bind to all interfaces 0.0.0.0
     addr.sin_port = htons(listenPort_); // format port number to big endiand
 
+    //reuse adress/port without keeping the old connection open
+    int opt = 1;
+    if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0) {
+        perror("setsockopt(SO_REUSEADDR) failed");
+        close(server_fd);
+        return;
+    }
+
+    //bind socket to address and port
     if (bind(server_fd, (sockaddr*)&addr, sizeof(addr)) < 0) {
         perror("Bind failed");
         close(server_fd);
         return;
     }
 
+    //start listening
     if (listen(server_fd, 5) < 0) {
         perror("Listen failed");
         close(server_fd);

@@ -555,7 +555,7 @@ CMAKE_UNAME:INTERNAL=/usr/bin/uname
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 //Details about finding Python3
-FIND_PACKAGE_MESSAGE_DETAILS_Python3:INTERNAL=[/usr/bin/python3.13][found components: Interpreter ][v3.13.5()]
+FIND_PACKAGE_MESSAGE_DETAILS_Python3:INTERNAL=[/usr/bin/python3.13][found components: Interpreter ][v3.13.7()]
 //Details about finding Threads
 FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
 //ADVANCED property for variable: GIT_EXECUTABLE
@@ -569,7 +569,7 @@ _Python3_Development_REASON_FAILURE:INTERNAL=
 //Path to a program.
 _Python3_EXECUTABLE:INTERNAL=/usr/bin/python3.13
 //Python3 Properties
-_Python3_INTERPRETER_PROPERTIES:INTERNAL=Python;3;13;5;64;32;<none>;cpython-313-x86_64-linux-gnu;abi3;/usr/lib/python3.13;/usr/lib/python3.13;/usr/lib/python3.13/site-packages;/usr/lib/python3.13/site-packages
+_Python3_INTERPRETER_PROPERTIES:INTERNAL=Python;3;13;7;64;32;<none>;cpython-313-x86_64-linux-gnu;abi3;/usr/lib/python3.13;/usr/lib/python3.13;/usr/lib/python3.13/site-packages;/usr/lib/python3.13/site-packages
 _Python3_INTERPRETER_SIGNATURE:INTERNAL=3cf1743d9aa7acccc2d2c98aa826f506
 //NumPy reason failure
 _Python3_NumPy_REASON_FAILURE:INTERNAL=
