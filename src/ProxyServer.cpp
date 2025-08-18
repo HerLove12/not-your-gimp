@@ -139,6 +139,24 @@ void ProxyServer::handleClient(int clientSocket) {
     // Step 5: Log and forward the first chunk immediately
     logFile << "[Client Request]\n" << requestData << "\n---\n";
     logFile.flush(); // ensure it appears in proxy.log
+///*
+    //allow browser view
+    //disable server compression by forcing Accept-Encoding: identity
+    size_t aePos = requestData.find("Accept-Encoding:");
+    if (aePos != std::string::npos) {
+        size_t endOfLine = requestData.find("\r\n", aePos);
+        if (endOfLine != std::string::npos) {
+            requestData.replace(aePos, endOfLine - aePos, "Accept-Encoding: identity");
+        }
+    } else {
+        // If header is missing, add it after first line (after method + path)
+        size_t firstLineEnd = requestData.find("\r\n");
+        if (firstLineEnd != std::string::npos) {
+            requestData.insert(firstLineEnd + 2, "Accept-Encoding: identity\r\n");
+        }
+    }
+
+//*/
     send(serverSocket, requestData.c_str(), requestData.length(), 0);
 
     // Step 6: Start Bi-Directional Data Forwarding
@@ -154,37 +172,107 @@ void ProxyServer::handleClient(int clientSocket) {
 }
 
 void ProxyServer::forwardData(int sourceSocket, int destSocket, const std::string& direction) {
-    char buffer[4096];
+    const size_t bufferSize = 8192; // larger buffer for efficiency
+    char buffer[bufferSize];
     ssize_t bytesRead;
 
-    while ((bytesRead = recv(sourceSocket, buffer, sizeof(buffer), 0)) > 0) {
-        std::string data(buffer, bytesRead);
+    if (direction == "Client → Server") {
+        // Forward client request, modifying Host header
+        std::string requestData;
+        while ((bytesRead = recv(sourceSocket, buffer, bufferSize, 0)) > 0) {
+            std::string chunk(buffer, bytesRead);
 
-        if (direction == "Server → Client") {
-            // Inject banner
-            size_t pos = data.find("</body>");
-            if (pos != std::string::npos) {
-                data.insert(pos, "<h1 style='color:red;'>[GIMP proxy injection worked]</h1>");
-                std::cout << "[Modify] Injected banner into response.\n";
+            // Modify Host header dynamically
+            size_t hostPos = chunk.find("Host:");
+            if (hostPos != std::string::npos) {
+                size_t endOfLine = chunk.find("\r\n", hostPos);
+                if (endOfLine != std::string::npos) {
+                    std::string originalHostLine = chunk.substr(hostPos, endOfLine - hostPos);
+                    std::string newHostLine = "Host: " + targetHost_;
+                    chunk.replace(hostPos, originalHostLine.length(), newHostLine);
+                    std::cout << "[Modify] Replaced Host Header → " << newHostLine << std::endl;
+                }
             }
 
-            // Log server response
-            logFile << "[Server Response]\n" << data << "\n---\n";
-            logFile.flush();
+            // Remove If-None-Match and If-Modified-Since to force fresh response
+            size_t etagPos = requestData.find("If-None-Match:");
+            if (etagPos != std::string::npos) {
+                size_t endOfLine = requestData.find("\r\n", etagPos);
+                requestData.erase(etagPos, endOfLine - etagPos + 2);
+            }
+
+            size_t imsPos = requestData.find("If-Modified-Since:");
+            if (imsPos != std::string::npos) {
+                size_t endOfLine = requestData.find("\r\n", imsPos);
+                requestData.erase(imsPos, endOfLine - imsPos + 2);
+            }
+
+            // Force identity encoding to disable compression
+            size_t aePos = chunk.find("Accept-Encoding:");
+            if (aePos != std::string::npos) {
+                size_t endOfLine = chunk.find("\r\n", aePos);
+                if (endOfLine != std::string::npos) {
+                    chunk.replace(aePos, endOfLine - aePos, "Accept-Encoding: identity");
+                }
+            }
+
+            requestData.append(chunk);
+            send(destSocket, chunk.c_str(), chunk.length(), 0);
+            std::cout << "[Data] " << direction << " - " << chunk.length() << " bytes" << std::endl;
         }
 
-        send(destSocket, data.c_str(), data.length(), 0);
-        std::cout << "[Data] " << direction << " - " << data.length() << " bytes" << std::endl;
-    }
+        if (bytesRead <= 0)
+            std::cout << "[*] " << direction << " connection closed by peer." << std::endl;
 
-    if (bytesRead == 0) {
+        logFile << "[Client Request]\n" << requestData << "\n---\n";
+        logFile.flush();
+    }
+    else if (direction == "Server → Client") {
+        // Accumulate full response first
+        std::string fullResponse;
+        while ((bytesRead = recv(sourceSocket, buffer, bufferSize, 0)) > 0) {
+            fullResponse.append(buffer, bytesRead);
+        }
+
+        if (bytesRead < 0) {
+            perror(("[!] recv() failed in " + direction).c_str());
+        }
+
+        // Disable chunked transfer encoding if present
+        size_t tePos = fullResponse.find("Transfer-Encoding: chunked");
+        if (tePos != std::string::npos) {
+            size_t endOfLine = fullResponse.find("\r\n", tePos);
+            fullResponse.erase(tePos, endOfLine - tePos + 2); // remove header line
+        }
+
+        // Inject banner before </body>
+        size_t bodyPos = fullResponse.find("</body>");
+        if (bodyPos != std::string::npos) {
+            std::string injection = "<h1 style='color:red;'>[GIMP proxy injection worked]</h1>";
+            fullResponse.insert(bodyPos, injection);
+            std::cout << "[Modify] Injected banner into response.\n";
+
+            // Update Content-Length header if present
+            size_t clPos = fullResponse.find("Content-Length:");
+            if (clPos != std::string::npos) {
+                size_t clEnd = fullResponse.find("\r\n", clPos);
+                size_t headerEnd = fullResponse.find("\r\n\r\n");
+                size_t bodyLength = fullResponse.length() - headerEnd - 4;
+                std::string newCl = "Content-Length: " + std::to_string(bodyLength);
+                fullResponse.replace(clPos, clEnd - clPos, newCl);
+            }
+        }
+
+        logFile << "[Server Response]\n" << fullResponse << "\n---\n";
+        logFile.flush();
+
+        // Send modified response
+        send(destSocket, fullResponse.c_str(), fullResponse.length(), 0);
+        std::cout << "[Data] " << direction << " - " << fullResponse.length() << " bytes" << std::endl;
+
         std::cout << "[*] " << direction << " connection closed by peer." << std::endl;
-    } else if (bytesRead < 0) {
-        perror(("[!] recv() failed in " + direction).c_str());
     }
 }
-
-
 
 
 
