@@ -316,6 +316,15 @@ GTEST_HAS_ABSL:BOOL=OFF
 INSTALL_GTEST:BOOL=ON
 
 //Value Computed by CMake
+NotYourGimpTests_BINARY_DIR:STATIC=/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/tests
+
+//Value Computed by CMake
+NotYourGimpTests_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+NotYourGimpTests_SOURCE_DIR:STATIC=/home/herlove/Documents/scripts/c-projects/not-your-gimp/tests
+
+//Value Computed by CMake
 gmock_BINARY_DIR:STATIC=/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/_deps/googletest-build/googlemock
 
 //Value Computed by CMake

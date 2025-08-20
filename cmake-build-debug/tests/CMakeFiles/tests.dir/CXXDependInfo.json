@@ -28,6 +28,11 @@
 			"language" : "CXX",
 			"source" : "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
 		},
+		"tests/CMakeFiles/tests.dir/test_main.cpp.o" : 
+		{
+			"language" : "CXX",
+			"source" : "/home/herlove/Documents/scripts/c-projects/not-your-gimp/tests/test_main.cpp"
+		},
 		"tests/CMakeFiles/tests.dir/test_proxy.cpp.o" : 
 		{
 			"language" : "CXX",
