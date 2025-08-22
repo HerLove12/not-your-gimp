@@ -13,6 +13,9 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googletest)
 
+# Find curl
+find_package(CURL REQUIRED)
+
 enable_testing()
 
 # Add the test executable
@@ -26,7 +29,7 @@ add_executable(tests
 target_include_directories(tests PRIVATE ../src)
 
 # Link against GTest
-target_link_libraries(tests GTest::gtest GTest::gtest_main pthread)
+target_link_libraries(tests GTest::gtest GTest::gtest_main pthread CURL::libcurl)
 
 # Automatically discover tests
 include(GoogleTest)

@@ -46038,8 +46038,12 @@ class ProxyServer {
 public:
     ProxyServer(int listenPort, const std::string& targetHost, int targetPort);
     void start();
+    void stop();
 
 private:
+    bool running_ = false;
+    int server_fd_ = -1;
+
     int listenPort_;
     std::string targetHost_;
     int targetPort_;
@@ -60356,21 +60360,21 @@ ProxyServer::ProxyServer(int listenPort, const std::string& targetHost, int targ
 
 void ProxyServer::start() {
 
-    int server_fd = socket(
+    server_fd_ = socket(
 # 25 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
-                          2
+                       2
 # 25 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
-                                 , 
+                              , 
 # 25 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
-                                   SOCK_STREAM
+                                SOCK_STREAM
 # 25 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
-                                              , 0);
-    if (server_fd < 0) {
+                                           , 0);
+    if (server_fd_ < 0) {
         perror("Socket failed");
         return;
     }
 
-    sockaddr_in addr {};
+    sockaddr_in addr{};
     addr.sin_family = 
 # 32 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
                      2
@@ -60383,47 +60387,65 @@ void ProxyServer::start() {
                                     ;
     addr.sin_port = htons(listenPort_);
 
-
     int opt = 1;
-    if (setsockopt(server_fd, 
-# 38 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
-                             1
-# 38 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
-                                       , 
-# 38 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
-                                         2
-# 38 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
-                                                     , &opt, sizeof(opt)) < 0) {
+    if (setsockopt(server_fd_, 
+# 37 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
+                              1
+# 37 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
+                                        , 
+# 37 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
+                                          2
+# 37 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
+                                                      , &opt, sizeof(opt)) < 0) {
         perror("setsockopt(SO_REUSEADDR) failed");
-        close(server_fd);
+        close(server_fd_);
         return;
     }
 
-
-    if (bind(server_fd, (sockaddr*)&addr, sizeof(addr)) < 0) {
+    if (bind(server_fd_, (sockaddr*)&addr, sizeof(addr)) < 0) {
         perror("Bind failed");
-        close(server_fd);
+        close(server_fd_);
         return;
     }
 
-
-    if (listen(server_fd, 5) < 0) {
+    if (listen(server_fd_, 5) < 0) {
         perror("Listen failed");
-        close(server_fd);
+        close(server_fd_);
         return;
     }
 
+    running_ = true;
     std::cout << "[*] Listening on port " << listenPort_ << std::endl;
 
-    while (true) {
-        int clientSocket = accept(server_fd, nullptr, nullptr);
+    while (running_) {
+        int clientSocket = accept(server_fd_, nullptr, nullptr);
         if (clientSocket < 0) {
+            if (!running_) break;
             perror("Accept failed");
             continue;
         }
 
         std::thread(&ProxyServer::handleClient, this, clientSocket).detach();
     }
+
+    close(server_fd_);
+    server_fd_ = -1;
+    std::cout << "[*] Proxy stopped listening on port " << listenPort_ << std::endl;
+}
+
+void ProxyServer::stop() {
+    running_ = false;
+    if (server_fd_ != -1) {
+        shutdown(server_fd_, 
+# 77 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
+                            SHUT_RDWR
+# 77 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
+                                     );
+        close(server_fd_);
+        server_fd_ = -1;
+    }
+    logFile.close();
+    std::cout << "[*] Proxy stopped gracefully." << std::endl;
 }
 
 void ProxyServer::handleClient(int clientSocket) {
@@ -60471,20 +60493,20 @@ void ProxyServer::handleClient(int clientSocket) {
 
     std::cout << "[+] Resolved " << host << " to IP: "
               << inet_ntoa(*(struct in_addr*)target->
-# 115 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
+# 129 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
                                                     h_addr_list[0]
-# 115 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
+# 129 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
                                                           ) << "\n";
 
 
     int serverSocket = socket(
-# 118 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
+# 132 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
                              2
-# 118 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
+# 132 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
                                     , 
-# 118 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
+# 132 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
                                       SOCK_STREAM
-# 118 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
+# 132 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
                                                  , 0);
     if (serverSocket < 0) {
         perror("Socket to target failed");
@@ -60494,15 +60516,15 @@ void ProxyServer::handleClient(int clientSocket) {
 
     sockaddr_in serverAddr {};
     serverAddr.sin_family = 
-# 126 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
+# 140 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
                            2
-# 126 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
+# 140 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
                                   ;
     serverAddr.sin_port = htons(80);
     memcpy(&serverAddr.sin_addr.s_addr, target->
-# 128 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
+# 142 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp" 3 4
                                                h_addr_list[0]
-# 128 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
+# 142 "/home/herlove/Documents/scripts/c-projects/not-your-gimp/src/ProxyServer.cpp"
                                                      , target->h_length);
 
     if (connect(serverSocket, (sockaddr*)&serverAddr, sizeof(serverAddr)) < 0) {

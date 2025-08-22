@@ -21,51 +21,65 @@ ProxyServer::ProxyServer(int listenPort, const std::string& targetHost, int targ
 }
 
 void ProxyServer::start() {
-    //create socket
-    int server_fd = socket(AF_INET, SOCK_STREAM, 0);
-    if (server_fd < 0) {
+    // create socket
+    server_fd_ = socket(AF_INET, SOCK_STREAM, 0);
+    if (server_fd_ < 0) {
         perror("Socket failed");
         return;
     }
 
-    sockaddr_in addr {}; // struct that holds ipv4 + port
-    addr.sin_family = AF_INET; // ipv4
-    addr.sin_addr.s_addr = INADDR_ANY; // bind to all interfaces 0.0.0.0
-    addr.sin_port = htons(listenPort_); // format port number to big endiand
+    sockaddr_in addr{};
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = INADDR_ANY;
+    addr.sin_port = htons(listenPort_);
 
-    //reuse adress/port without keeping the old connection open
     int opt = 1;
-    if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0) {
+    if (setsockopt(server_fd_, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0) {
         perror("setsockopt(SO_REUSEADDR) failed");
-        close(server_fd);
+        close(server_fd_);
         return;
     }
 
-    //bind socket to address and port
-    if (bind(server_fd, (sockaddr*)&addr, sizeof(addr)) < 0) {
+    if (bind(server_fd_, (sockaddr*)&addr, sizeof(addr)) < 0) {
         perror("Bind failed");
-        close(server_fd);
+        close(server_fd_);
         return;
     }
 
-    //start listening
-    if (listen(server_fd, 5) < 0) {
+    if (listen(server_fd_, 5) < 0) {
         perror("Listen failed");
-        close(server_fd);
+        close(server_fd_);
         return;
     }
 
+    running_ = true;
     std::cout << "[*] Listening on port " << listenPort_ << std::endl;
 
-    while (true) {
-        int clientSocket = accept(server_fd, nullptr, nullptr);
+    while (running_) {
+        int clientSocket = accept(server_fd_, nullptr, nullptr);
         if (clientSocket < 0) {
+            if (!running_) break;  // exit loop when stop() is called
             perror("Accept failed");
             continue;
         }
 
         std::thread(&ProxyServer::handleClient, this, clientSocket).detach();
     }
+
+    close(server_fd_);
+    server_fd_ = -1;
+    std::cout << "[*] Proxy stopped listening on port " << listenPort_ << std::endl;
+}
+
+void ProxyServer::stop() {
+    running_ = false;
+    if (server_fd_ != -1) {
+        shutdown(server_fd_, SHUT_RDWR); // unblock accept()
+        close(server_fd_);
+        server_fd_ = -1;
+    }
+    logFile.close();
+    std::cout << "[*] Proxy stopped gracefully." << std::endl;
 }
 
 void ProxyServer::handleClient(int clientSocket) {
@@ -273,7 +287,6 @@ void ProxyServer::forwardData(int sourceSocket, int destSocket, const std::strin
         std::cout << "[*] " << direction << " connection closed by peer." << std::endl;
     }
 }
-
 
 
 

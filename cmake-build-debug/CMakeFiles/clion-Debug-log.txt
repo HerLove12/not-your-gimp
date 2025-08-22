@@ -1,4 +1,4 @@
 /home/herlove/.local/share/JetBrains/Toolbox/apps/clion/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/home/herlove/.local/share/JetBrains/Toolbox/apps/clion/bin/ninja/linux/x64/ninja -G Ninja -S /home/herlove/Documents/scripts/c-projects/not-your-gimp -B /home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug
--- Configuring done (0.7s)
+-- Configuring done (0.8s)
 -- Generating done (0.0s)
 -- Build files have been written to: /home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug

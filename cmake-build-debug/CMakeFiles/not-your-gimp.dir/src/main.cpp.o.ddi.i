@@ -46038,8 +46038,12 @@ class ProxyServer {
 public:
     ProxyServer(int listenPort, const std::string& targetHost, int targetPort);
     void start();
+    void stop();
 
 private:
+    bool running_ = false;
+    int server_fd_ = -1;
+
     int listenPort_;
     std::string targetHost_;
     int targetPort_;

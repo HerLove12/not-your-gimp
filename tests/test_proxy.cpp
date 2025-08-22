@@ -1,48 +1,67 @@
-// tests/test_proxy.cpp
-#include <gtest/gtest.h>
 #include "ProxyServer.h"
+#include <gtest/gtest.h>
+#include <thread>
+#include <chrono>
+#include <curl/curl.h>
+
+// helper to catch curl response into std::string
+static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
+    ((std::string*)userp)->append((char*)contents, size * nmemb);
+    return size * nmemb;
+}
 
 class ProxyServerTest : public ::testing::Test {
 protected:
-    ProxyServer proxy{8080, "example.com", 80}; // test instance
+    ProxyServer* proxy;
+    std::thread serverThread;
+
+    void SetUp() override {
+        proxy = new ProxyServer(8080, "example.com", 80);
+        serverThread = std::thread([this]() { proxy->start(); });
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    }
+
+    void TearDown() override {
+        proxy->stop();
+        if (serverThread.joinable()) {
+            serverThread.join();
+        }
+        delete proxy;
+
+        //need to sleep or the new proxy might not start properly, tried editing stop() method but it didn't work
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    }
+
+    std::string makeCurlRequest(const std::string& url) {
+        CURL* curl;
+        CURLcode res;
+        std::string readBuffer;
+
+        curl = curl_easy_init();
+        if (curl) {
+            curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+            curl_easy_setopt(curl, CURLOPT_PROXY, "http://127.0.0.1:8080");
+            curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+            res = curl_easy_perform(curl);
+            curl_easy_cleanup(curl);
+        }
+        return readBuffer;
+    }
 };
 
-TEST_F(ProxyServerTest, ExtractHostHeader) {
-    std::string request = "GET / HTTP/1.1\r\nHost: example.com\r\n\r\n";
-    size_t hostPos = request.find("Host:");
-    ASSERT_NE(hostPos, std::string::npos);
-
-    size_t hostStart = hostPos + 5;
-    size_t hostEnd = request.find("\r\n", hostStart);
-    std::string host = request.substr(hostStart, hostEnd - hostStart);
-
-    // Trim
-    host.erase(0, host.find_first_not_of(" \t"));
-    host.erase(host.find_last_not_of(" \t") + 1);
-
-    EXPECT_EQ(host, "example.com");
+// connectivity test
+TEST_F(ProxyServerTest, CanFetchThroughProxy) {
+    std::string response = makeCurlRequest("http://example.com");
+    ASSERT_FALSE(response.empty());
+    ASSERT_NE(response.find("Example Domain"), std::string::npos);
 }
 
-TEST_F(ProxyServerTest, ForceIdentityEncoding) {
-    std::string req = "GET / HTTP/1.1\r\nHost: test.com\r\nAccept-Encoding: gzip\r\n\r\n";
-
-    size_t aePos = req.find("Accept-Encoding:");
-    ASSERT_NE(aePos, std::string::npos);
-
-    size_t endOfLine = req.find("\r\n", aePos);
-    req.replace(aePos, endOfLine - aePos, "Accept-Encoding: identity");
-
-    EXPECT_NE(req.find("identity"), std::string::npos);
-}
-
-TEST_F(ProxyServerTest, InjectsIntoResponse) {
-    std::string resp = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n"
-                       "<html><body>Hello world</body></html>";
-
-    size_t pos = resp.find("</body>");
-    ASSERT_NE(pos, std::string::npos);
-
-    resp.insert(pos, "<h1 style='color:red;'>[Injected]</h1>");
-
-    EXPECT_NE(resp.find("[Injected]"), std::string::npos);
+// Injection test
+TEST_F(ProxyServerTest, InjectsBannerInResponse) {
+    std::string response = makeCurlRequest("http://example.com");
+    ASSERT_NE(response.find("[GIMP proxy injection worked]"), std::string::npos);
 }
