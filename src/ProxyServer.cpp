@@ -89,6 +89,21 @@ void ProxyServer::handleClient(int clientSocket) {
     }
 
     std::string request(buffer, bytesRead);
+
+    ///*
+    size_t etagPos = request.find("If-None-Match:");
+    if (etagPos != std::string::npos) {
+        size_t endLine = request.find("\r\n", etagPos);
+        request.erase(etagPos, endLine - etagPos + 2);
+    }
+
+    size_t imsPos = request.find("If-Modified-Since:");
+    if (imsPos != std::string::npos) {
+        size_t endLine = request.find("\r\n", imsPos);
+        request.erase(imsPos, endLine - imsPos + 2);
+    }
+    //*/
+
     logFile << "[request]\n" << request << "\n";
     logFile.flush();
 
