@@ -6,22 +6,22 @@ cmake_minimum_required(VERSION ${CMAKE_VERSION}) # this file comes with cmake
 # If CMAKE_DISABLE_SOURCE_CHANGES is set to true and the source directory is an
 # existing directory in our source tree, calling file(MAKE_DIRECTORY) on it
 # would cause a fatal error, even though it would be a no-op.
-if(NOT EXISTS "/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/_deps/googletest-src")
-  file(MAKE_DIRECTORY "/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/_deps/googletest-src")
+if(NOT EXISTS "/home/herlove/Downloads/test-proj/not-your-gimp/cmake-build-debug/_deps/googletest-src")
+  file(MAKE_DIRECTORY "/home/herlove/Downloads/test-proj/not-your-gimp/cmake-build-debug/_deps/googletest-src")
 endif()
 file(MAKE_DIRECTORY
-  "/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/_deps/googletest-build"
-  "/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix"
-  "/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/tmp"
-  "/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp"
-  "/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src"
-  "/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp"
+  "/home/herlove/Downloads/test-proj/not-your-gimp/cmake-build-debug/_deps/googletest-build"
+  "/home/herlove/Downloads/test-proj/not-your-gimp/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix"
+  "/home/herlove/Downloads/test-proj/not-your-gimp/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/tmp"
+  "/home/herlove/Downloads/test-proj/not-your-gimp/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp"
+  "/home/herlove/Downloads/test-proj/not-your-gimp/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src"
+  "/home/herlove/Downloads/test-proj/not-your-gimp/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp"
 )
 
 set(configSubDirs )
 foreach(subDir IN LISTS configSubDirs)
-    file(MAKE_DIRECTORY "/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/${subDir}")
+    file(MAKE_DIRECTORY "/home/herlove/Downloads/test-proj/not-your-gimp/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/${subDir}")
 endforeach()
 if(cfgdir)
-  file(MAKE_DIRECTORY "/home/herlove/Documents/scripts/c-projects/not-your-gimp/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp${cfgdir}") # cfgdir has leading slash
+  file(MAKE_DIRECTORY "/home/herlove/Downloads/test-proj/not-your-gimp/cmake-build-debug/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp${cfgdir}") # cfgdir has leading slash
 endif()

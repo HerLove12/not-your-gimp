@@ -13,7 +13,7 @@
 
 class ProxyServer {
 public:
-    ProxyServer(int listenPort, const std::string& targetHost, int targetPort);
+    explicit ProxyServer(int listenPort);
     void start();
     void stop();
 
@@ -22,8 +22,6 @@ private:
     int server_fd_ = -1;
 
     int listenPort_;
-    std::string targetHost_;
-    int targetPort_;
     std::ofstream logFile;
 
     void handleClient(int clientSocket);
