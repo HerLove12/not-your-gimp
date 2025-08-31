@@ -1,5 +1,0 @@
-if(EXISTS "/home/herlove/Downloads/test-proj/not-your-gimp/cmake-build-debug/tests/tests[1]_tests.cmake")
-  include("/home/herlove/Downloads/test-proj/not-your-gimp/cmake-build-debug/tests/tests[1]_tests.cmake")
-else()
-  add_test(tests_NOT_BUILT tests_NOT_BUILT)
-endif()
