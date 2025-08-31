@@ -4,7 +4,7 @@
 #include <chrono>
 #include <curl/curl.h>
 
-// helper to catch curl response into std::string
+// Helper to capture curl responses
 static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
     ((std::string*)userp)->append((char*)contents, size * nmemb);
     return size * nmemb;
@@ -16,7 +16,7 @@ protected:
     std::thread serverThread;
 
     void SetUp() override {
-        proxy = new ProxyServer(8080, "example.com", 80);
+        proxy = new ProxyServer(8080);
         serverThread = std::thread([this]() { proxy->start(); });
 
         std::this_thread::sleep_for(std::chrono::milliseconds(200));
@@ -24,12 +24,8 @@ protected:
 
     void TearDown() override {
         proxy->stop();
-        if (serverThread.joinable()) {
-            serverThread.join();
-        }
+        if (serverThread.joinable()) serverThread.join();
         delete proxy;
-
-        //need to sleep or the new proxy might not start properly, tried editing stop() method but it didn't work
 
         std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
@@ -62,6 +58,6 @@ TEST_F(ProxyServerTest, CanFetchThroughProxy) {
 
 // Injection test
 TEST_F(ProxyServerTest, InjectsBannerInResponse) {
-    std::string response = makeCurlRequest("http://example.com");
+    std::string response = makeCurlRequest("http://vulnweb.com");
     ASSERT_NE(response.find("[GIMP proxy injection worked]"), std::string::npos);
 }
