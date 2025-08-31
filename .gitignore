@@ -1,7 +1,7 @@
 testcases.txt
 cmake-build-debug
 img
-build/
+build
 
 ### CLion ### UNCOMMENT IF PRORESSOR SAYS IT'S OK!
 
